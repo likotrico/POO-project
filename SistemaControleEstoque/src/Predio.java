@@ -15,6 +15,20 @@ public class Predio {
         this.espaco = new Espaco[this.quant_lado][this.quant_nivel];
     }
 
+    public void iniciarNovoPredio(int quant_lado, int quant_nivel){
+        this.quant_lado = quant_lado;
+        this.quant_nivel = quant_nivel;
+        this.criarEspacos();
+    }
+
+    public void imprimirPredio(Predio pred){
+        for(int i = 0; i < quant_lado; i++){
+            for(int j = 0; j < quant_nivel; j++){
+                Produto prod = pred.espaco[i][j].getProduto();
+                System.out.println(prod.getCodigo());;
+            }
+        }
+    }
 
     //GETTERS AND SETTERS
     public int getLado() {
