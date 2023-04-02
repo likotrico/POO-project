@@ -5,7 +5,11 @@ public class Espaco {
     private Produto produto; //INFORMAÇÕES DO PRODUTO
     private int quantidade; //QUANTIDADE DO PRODUTO PRESENTE NO ESPAÇO
 
-
+    //INSERINDO UM PRODUTO EM UM ESPAÇO
+    public void inserirProdutoEspaco(Produto produto, int quantidade){
+        setProduto(produto);
+        setQuantidade(quantidade);
+    }
 
     //GETTERS AND SETTERS
     public int getLado() {

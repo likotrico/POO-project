@@ -25,13 +25,21 @@ public class Estoque {
         }
     }
 
-    public void menuEstoque(){
-
+    //INSERIR NOVO PRODUTOR NO ESTOQUE
+    public void inserirProdutoEstoque(Produto produto, int pred, int qtd){
+        if(pred >= estoque.length){ //VERIFICANDO SE O PRÉDIO DIGITADO FOI VÁLIDO
+            System.out.println("Prédio inexistente");
+        }else{
+            estoque[pred].inserirProdutoPredio(produto, qtd);
+        }
     }
 
-    public void imprimirEstoque(Estoque est, int num){
-        for (int i = 0; i < num; i++){
-            est.estoque[i].imprimirPredio(est.estoque[i]);
+    //FUNÇÃO PARA IMPRIMIR TODOS OS PRODUTOS DENTRO DO ESTOQUE
+    public void imprimirEstoque(Estoque est){
+        for (int i = 0; i < this.estoque.length; i++){
+            if(est.estoque[i] != null){
+                est.estoque[i].imprimirPredio(est.estoque[i]);
+            }
         }
     }
 
