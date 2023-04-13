@@ -25,12 +25,21 @@ public class Estoque {
         }
     }
 
-    //INSERIR NOVO PRODUTOR NO ESTOQUE
+    //INSERIR NOVO PRODUTO NO ESTOQUE
     public void inserirProdutoEstoque(Produto produto, int pred, int qtd){
         if(pred >= estoque.length){ //VERIFICANDO SE O PRÉDIO DIGITADO FOI VÁLIDO
             System.out.println("Prédio inexistente");
         }else{
             estoque[pred].inserirProdutoPredio(produto, qtd);
+        }
+    }
+
+    //REMOVER UM PRODUTO NO ESTOQUE
+    public void removerProdutoEstoque(int pred){
+        if(pred >= estoque.length){ //VERIFICANDO SE O PRÉDIO DIGITADO FOI VÁLIDO
+            System.out.println("Prédio inexistente");
+        }else{
+            estoque[pred].removerProdutoPredio();
         }
     }
 

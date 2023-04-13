@@ -59,6 +59,24 @@ public class Predio {
         }
     }
 
+    //REMOVER PRODUTO EM UM ESPAÇO
+    public void removerProdutoPredio(){
+        while(true){
+            int side = Integer.parseInt(JOptionPane.showInputDialog("Em qual lado deseja remover?"));
+            if(side > this.quant_lado - 1 || side <= 0){ //VALIDANDO O LADO
+                System.out.println("Lado inexistente");
+            }else{
+                int level = Integer.parseInt(JOptionPane.showInputDialog("Em qual nível deseja remover?"));
+                if(level > this.quant_nivel - 1 || level <= 0){//VALIDANDO O NÍVEL
+                    System.out.println("Nível inexistente");
+                }else{
+                    espaco[side][level].remover();
+                    break;
+                }
+            }
+        }
+    }
+
     //GETTERS AND SETTERS
     public int getLado() {
         return this.quant_lado;

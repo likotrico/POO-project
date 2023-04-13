@@ -11,6 +11,16 @@ public class Espaco {
         setQuantidade(quantidade);
     }
 
+    //REMOVENDO UM PRODUTO EM UM ESPAÇO
+    public void remover(){
+        if(this.produto != null){
+            this.produto = null;
+            this.quantidade = 0;
+        }else{
+            System.out.println("Não há produto no local indicado!");
+        }
+    }
+
     //GETTERS AND SETTERS
     public int getLado() {
         return this.lado;
