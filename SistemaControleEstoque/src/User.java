@@ -1,10 +1,12 @@
-public class User {
+public abstract class User {
 
     private String nome;
     private String email;
     private int senha;
     private int id;
 
+    /*GETTERS AND SETTERS */
+    
     public int getId() {
         return this.id;
     }
