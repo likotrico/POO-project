@@ -25,12 +25,33 @@ public class Estoque {
         }
     }
 
-    //INSERIR NOVO PRODUTOR NO ESTOQUE
+    //INSERIR NOVO PRODUTO NO ESTOQUE
     public void inserirProdutoEstoque(Produto produto, int pred, int qtd){
         if(pred >= estoque.length){ //VERIFICANDO SE O PRÉDIO DIGITADO FOI VÁLIDO
             System.out.println("Prédio inexistente");
         }else{
             estoque[pred].inserirProdutoPredio(produto, qtd);
+        }
+    }
+
+    //MOVER UM PRODUTO EXISTENTE NO ESTOQUE PARA OUTRO ESPAÇO
+    public void moverProdutoEstoque(int pred_part, int lado_part, int nivel_part, int qtd, int pred_dest, int lado_dest, int nivel_dest, Produto produto){
+        estoque[pred_part].subtrairPredio(lado_part, nivel_part, qtd, produto);
+        if(estoque[pred_dest].existeProduto(lado_dest, nivel_dest)){
+            if(estoque[pred_dest].mesmoProduto(lado_dest, nivel_dest, produto)){
+                estoque[pred_dest].incrementarQuantidade(lado_dest, nivel_dest, qtd);
+            }
+        }else{
+            inserirProdutoEstoque(produto, pred_dest, qtd);
+        }
+    }
+
+    //REMOVER UM PRODUTO NO ESTOQUE
+    public void removerProdutoEstoque(int pred){
+        if(pred >= estoque.length){ //VERIFICANDO SE O PRÉDIO DIGITADO FOI VÁLIDO
+            System.out.println("Prédio inexistente");
+        }else{
+            estoque[pred].removerProdutoPredio();
         }
     }
 
