@@ -5,10 +5,31 @@ public class Espaco {
     private Produto produto; //INFORMAÇÕES DO PRODUTO
     private int quantidade; //QUANTIDADE DO PRODUTO PRESENTE NO ESPAÇO
 
+    public Espaco(){
+        this.quantidade = 0;
+        this.produto = null;
+    }
+
     //INSERINDO UM PRODUTO EM UM ESPAÇO
     public void inserirProdutoEspaco(Produto produto, int quantidade){
         setProduto(produto);
         setQuantidade(quantidade);
+    }
+
+    //REMOVENDO UM PRODUTO EM UM ESPAÇO
+    public void remover(){
+        if(this.produto != null){
+            this.produto = null;
+            this.quantidade = 0;
+        }else{
+            System.out.println("Não há produto no local indicado!");
+        }
+    }
+
+    //SUBTRAIR QUANTIDADE
+    public void subtrairQuantidade(int sub){
+        if(getQuantidade() - sub < 0) return;
+        else this.setQuantidade((this.getQuantidade() - sub));
     }
 
     //GETTERS AND SETTERS
