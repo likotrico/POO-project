@@ -15,6 +15,7 @@ public class Celula_predio_interface extends JPanel{
 
     private int largura;
     private int altura;
+    private int predio;
 
     /*CONSTRUTOR */
     public Celula_predio_interface(int qtd_lados, int qtd_niveis, int predio, int largura, int altura){
@@ -26,6 +27,7 @@ public class Celula_predio_interface extends JPanel{
         this.setBackground(Color.green);
         this.qtd_linhas = qtd_niveis; 
         this.qtd_colunas = qtd_lados;
+        this.predio = predio;
 
         this.label_principal = new JLabel(); //Criando o Label
         label_principal.setBackground(Color.red); //APENAS PARA SABER A REGIAL DA LABEL
@@ -59,9 +61,12 @@ public class Celula_predio_interface extends JPanel{
         for(i=0; i<qtd_colunas; i++){ //LADO
             for(j=0; j<qtd_linhas; j++){ //NÍVEL
                 JButton b = new JButton();
+                int lado = i + 1;
+                int nivel = qtd_linhas - j;
                 b.setText(""+i+j);
                 b.setBounds(x, y, 70, 70);
                 b.setFocusable(false);
+                b.addActionListener(e -> new Popup_Botoes_Predio_interface(this.predio, lado, nivel));
                 this.add(b);
                 y+=70;
                 this.altura+=70;
@@ -138,5 +143,13 @@ public class Celula_predio_interface extends JPanel{
 
     public void setAltura(int altura) {
         this.altura = altura;
+    }
+
+    public int getPredio() {
+        return predio;
+    }
+
+    public void setPredio(int predio) {
+        this.predio = predio;
     }
 }

@@ -1,15 +1,12 @@
 import javax.swing.JOptionPane;
 
-import login_cadastro.*;
-import estoque.*;
-
 
 public class Main {
     public static void main(String[] args) throws Exception {
         int menu = -1;
         int menuest = -1;
         int id, quantidade_produto, pred;
-        new Login().setVisible(true);
+       // new Login().setVisible(true);
         /*
         while (menu != 0) {
             //System.out.println("1 - Criar Estoque\n0 - Sair");
