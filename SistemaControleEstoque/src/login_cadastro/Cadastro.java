@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 
+import usuarios.*;
+
 /**
  *
  * @author COMPUTADOR

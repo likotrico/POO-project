@@ -1,3 +1,5 @@
+package estoque;
+
 public class Espaco {
 
     private int lado; //O LADO QUE O PRODUTO ESTÁ OCUPANDO

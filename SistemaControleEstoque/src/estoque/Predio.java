@@ -1,3 +1,5 @@
+package estoque;
+
 import javax.swing.JOptionPane;
 
 public class Predio {
