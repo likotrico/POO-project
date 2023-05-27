@@ -9,8 +9,8 @@ public class JframePrincipal {
     /*CONSTRUTOR DA JFRAME*/
     public JframePrincipal(int qtd_lados, int qtd_niveis, int qtd_predios){
         
-        int altura = 1024;
-        int largura = 768;
+        int altura = 900;
+        int largura = 600;
         JFrame frame = new JFrame();
         frame.setLayout(null);
         frame.setSize(altura, largura);
@@ -20,7 +20,7 @@ public class JframePrincipal {
         Painel_predios_interface p = new Painel_predios_interface(qtd_predios, qtd_niveis, qtd_lados, largura, altura);
 
         JScrollPane scroll = new JScrollPane(p);
-        scroll.setBounds(450, 50, 500, 600);
+        scroll.setBounds(350, 50, 450, 450);
 
         this.scrollPanePredios = scroll;
         this.frame = frame;
