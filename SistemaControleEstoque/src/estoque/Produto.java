@@ -1,3 +1,5 @@
+package estoque;
+
 public class Produto {
 
     private int codigo;

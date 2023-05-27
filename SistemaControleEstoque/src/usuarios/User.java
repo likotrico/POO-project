@@ -1,18 +1,12 @@
+package usuarios;
+
 public abstract class User {
 
     private String nome;
     private String email;
-    private int senha;
-    private int id;
+    private String senha;
 
     /*GETTERS AND SETTERS */
-    
-    public int getId() {
-        return this.id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
     public String getNome() {
         return this.nome;
     }
@@ -25,10 +19,10 @@ public abstract class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    public int getSenha() {
+    public String getSenha() {
         return this.senha;
     }
-    public void setSenha(int senha) {
+    public void setSenha(String senha) {
         this.senha = senha;
     }
 }
