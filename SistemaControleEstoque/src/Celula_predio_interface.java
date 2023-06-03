@@ -2,8 +2,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import estoque.Estoque;
 
 public class Celula_predio_interface extends JPanel{
 
@@ -18,7 +21,7 @@ public class Celula_predio_interface extends JPanel{
     private int predio;
 
     /*CONSTRUTOR */
-    public Celula_predio_interface(int qtd_lados, int qtd_niveis, int predio, int largura, int altura){
+    public Celula_predio_interface(JframePrincipal frameprincipal, Estoque estoque, int qtd_lados, int qtd_niveis, int predio, int largura, int altura){
         this.setPreferredSize(new Dimension(largura, altura)); //Criando o Jpainel com as dimensões
         this.setLayout(null); //Colocando o Layout da Panel
         this.setBounds(0, 0, largura, altura);
@@ -42,7 +45,7 @@ public class Celula_predio_interface extends JPanel{
         texto_principal.setBackground(Color.blue);
         texto_principal.setBounds(0,0,largura,50);
         this.add(texto_principal);
-        this.criarBotoes();
+        this.criarBotoes(frameprincipal, estoque);
     }
 
     public Celula_predio_interface(){
@@ -53,7 +56,7 @@ public class Celula_predio_interface extends JPanel{
         this.lista_boteos = new JButton[qtd_linhas][qtd_colunas];
     }
 
-    public void criarBotoes(){
+    public void criarBotoes(JframePrincipal frameprincipal, Estoque estoque){
         int i, j;
         int x = 0, y = 50;
         this.largura = x;
@@ -63,11 +66,12 @@ public class Celula_predio_interface extends JPanel{
                 JButton b = new JButton();
                 int lado = i + 1;
                 int nivel = qtd_linhas - j;
-                b.setText(""+i+j);
+                //b.setText(""+i+j);
                 b.setBounds(x, y, 70, 70);
                 b.setFocusable(false);
-                b.addActionListener(e -> new Popup_Botoes_Predio_interface(this.predio, lado, nivel));
+                b.addActionListener(e -> new Popup_Botoes_Predio_interface(frameprincipal, estoque, this.predio - 1, lado - 1, nivel - 1));
                 this.add(b);
+                this.lista_boteos[nivel - 1][lado - 1] = b;
                 y+=70;
                 this.altura+=70;
                 //System.out.println("y: "+y);
@@ -93,6 +97,36 @@ public class Celula_predio_interface extends JPanel{
     //ALTERA A POSIÇÃO DE INICIO DE IMPRESSÃO
     public void alterarPosição(int x, int y){
         this.setBounds(x, y, largura, altura);
+    }
+
+
+
+
+
+
+    public static void main(String[] args) {
+        int qtd_predios = 2;
+        int qtd_lados = 2;
+        int qtd_niveis = 2;
+        int predio = 2; 
+        Estoque estoque = new Estoque();
+        estoque.iniciarEstoque(estoque, predio, qtd_lados, qtd_niveis);
+
+        int largura = 400;
+        int altura = 400;
+        JFrame frame = new JFrame();
+        frame.setLayout(null);
+        frame.setSize(largura+100, altura+100);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        Celula_predio_interface teste = new Celula_predio_interface(new JframePrincipal(), estoque, qtd_lados, qtd_niveis, predio, largura, altura);
+
+        frame.add(teste);
+        frame.setVisible(true);
+        while(true){
+            estoque.imprimirEstoque(estoque);
+        }
     }
     
     /*GETS ANDS SETS */
@@ -151,5 +185,18 @@ public class Celula_predio_interface extends JPanel{
 
     public void setPredio(int predio) {
         this.predio = predio;
+    }
+
+    public void atualizarTextoBotoes(Estoque estoque){
+        int i, j;
+        for(i=0; i<qtd_colunas; i++){
+            for(j=0; j<qtd_linhas; j++){
+                if(estoque.pegarCodigoProduto(this.predio-1, i, j) != -1){
+                    lista_boteos[j][i].setText(""+estoque.pegarCodigoProduto(this.predio - 1, i, j));
+                }
+                //System.out.println(lista_boteos[j][i].getText());
+            }
+        }
+
     }
 }

@@ -2,12 +2,19 @@ package estoque;
 
 public class Produto {
 
-    private int codigo;
+    private int codigo = -1;
     private double valor_venda;
     private int ano_val;
     private int mes_val;
     private int dia_val;
 
+    public Produto(int codigo){
+        this.codigo = codigo;
+    }
+
+    public int pegarCodigoProduto(){
+        return this.codigo;
+    }
 
     /*GETTERS AND SETTERS */
 
@@ -17,10 +24,6 @@ public class Produto {
 
     public void setValor_venda(double valor_venda) {
         this.valor_venda = valor_venda;
-    }
-
-    public Produto(int codigo){
-        this.codigo = codigo;
     }
 
     public int getCodigo() {

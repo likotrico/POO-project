@@ -5,6 +5,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import estoque.Estoque;
+
 public class Popup_Botoes_Predio_interface {
     
     private JFrame frame; //OK
@@ -32,7 +34,7 @@ public class Popup_Botoes_Predio_interface {
     private int lado;
     private int nivel;
 
-    public Popup_Botoes_Predio_interface(int predio, int lado, int nivel){
+    public Popup_Botoes_Predio_interface(JframePrincipal frameprincipal, Estoque estoque,  int predio, int lado, int nivel){
         this.predio = predio;
         this.lado = lado;
         this.nivel = nivel;
@@ -166,6 +168,7 @@ public class Popup_Botoes_Predio_interface {
 
         //ADICIONANDO O BOTÃO ADICIONAR
         JButton botao1 = new JButton();
+        botao1.addActionListener( e -> new Popup_Adicionar_Produto(frameprincipal, estoque, predio, lado, nivel));
         botao1.setFocusable(false);
         botao1.setText("Adicionar");
         botao1.setBounds(105, 160, 100, 25);
@@ -359,6 +362,16 @@ public class Popup_Botoes_Predio_interface {
     }
 
     public static void main(String[] args) {
-        Popup_Botoes_Predio_interface pop = new Popup_Botoes_Predio_interface(1, 1, 1);
+        int qtd_predios = 2;
+        int qtd_lados = 2;
+        int qtd_niveis = 2;
+        int predio = 2; 
+        Estoque estoque = new Estoque();
+        estoque.iniciarEstoque(estoque, predio, qtd_lados, qtd_niveis);
+
+        //Popup_Botoes_Predio_interface pop = new Popup_Botoes_Predio_interface(new JframePrincipal(qtd_lados, qtd_niveis, qtd_predios), estoque, 1, 1, 1);
+        while(true){
+            estoque.imprimirEstoque(estoque);
+        }
     }
 }

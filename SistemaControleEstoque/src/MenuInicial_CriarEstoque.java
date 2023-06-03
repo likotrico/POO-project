@@ -105,7 +105,7 @@ public class MenuInicial_CriarEstoque {
 
         //ADICIONANDO O JBUTTON CRIAR
         JButton botao1 = new JButton();
-        botao1.setFocusable(true);
+        botao1.setFocusable(false);
         Font fontebotao = new Font("Criar", Font.BOLD, 15);
         botao1.setFont(fontebotao);
         botao1.setText(fontebotao.getName());
@@ -114,7 +114,7 @@ public class MenuInicial_CriarEstoque {
 
         //ADICIONANDO O JBUTTON CANCELAR
         JButton botao2 = new JButton();
-        botao2.setFocusable(true);
+        botao2.setFocusable(false);
         botao2.addActionListener(e->this.frame.dispose());
         Font fontebotao2 = new Font("Cancelar", Font.BOLD, 15);
         botao2.setFont(fontebotao2);

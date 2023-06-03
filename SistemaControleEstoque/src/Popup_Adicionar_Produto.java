@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import estoque.Estoque;
+import estoque.Produto;
+
 public class Popup_Adicionar_Produto {
     
     private JFrame frame; //OK
@@ -27,11 +30,11 @@ public class Popup_Adicionar_Produto {
     private JButton botaoAdicionar;
     private JButton botaoCancelar;
 
-    public Popup_Adicionar_Produto(){
+    public Popup_Adicionar_Produto(JframePrincipal frameprincipal, Estoque estoque, int predio, int lado, int nivel){
 
         JFrame frame = new JFrame();
         frame.setLayout(null);
-        frame.setSize(280, 400);
+        frame.setSize(280, 320);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.frame = frame;
@@ -138,11 +141,22 @@ public class Popup_Adicionar_Produto {
         //ADICIONANDO BOTAO ADICIONAR
         JButton botao1 = new JButton();
         botao1.setFocusable(false);
+        botao1.addActionListener(e -> adicionar(frameprincipal, estoque, predio, lado, nivel));
         Font fontebotao1 = new Font("Adicionar", Font.BOLD, 13);
         botao1.setFont(fontebotao1);
         botao1.setText(fontebotao1.getName());
         botao1.setBounds(20, 180, 110, 30);
         this.botaoAdicionar = botao1;
+
+        //ADICIONANDO BOTAO CANCELAR
+        JButton botao2 = new JButton();
+        botao2.setFocusable(false);
+        botao2.addActionListener(e -> this.frame.dispose());
+        Font fontebotao2 = new Font("Cancelar", Font.BOLD, 13);
+        botao2.setFont(fontebotao2);
+        botao2.setText(fontebotao2.getName());
+        botao2.setBounds(20, 220, 110, 30);
+        this.botaoCancelar = botao2;
         
         //ADICIONANDO JLABELS
         this.frame.add(this.textoAdicionarProduto);
@@ -162,12 +176,35 @@ public class Popup_Adicionar_Produto {
 
         //ADICIONANDO OS BOTÕES
         this.frame.add(this.botaoAdicionar);
+        this.frame.add(this.botaoCancelar);
 
         this.frame.setVisible(true);
     }
+
+    public void adicionar(JframePrincipal frameprincipal, Estoque estoque, int predio, int lado, int nivel){
+        Produto produto = new Produto(Integer.parseInt(this.inputCodigoProduto.getText()));
+        produto.setDia_val(Integer.parseInt(this.inputDiaValidade.getText()));
+        produto.setMes_val(Integer.parseInt(this.inputMesValidade.getText()));
+        produto.setAno_val(Integer.parseInt(this.inputAnoValidade.getText()));
+        
+        estoque.inserir(produto, predio, lado, nivel, Integer.parseInt(this.inputQuantidadeProduto.getText()));
+
+        frameprincipal.atualizarOsBotoes(estoque);
+        this.frame.dispose();
+    }
     
     public static void main(String[] args) {
-        Popup_Adicionar_Produto pop = new Popup_Adicionar_Produto();
+        int qtd_predios = 2;
+        int qtd_lados = 2;
+        int qtd_niveis = 2;
+        int predio = 2; 
+        Estoque estoque = new Estoque();
+        estoque.iniciarEstoque(estoque, predio, qtd_lados, qtd_niveis);
+
+        //Popup_Adicionar_Produto pop = new Popup_Adicionar_Produto(new JframePrincipal(qtd_lados, qtd_niveis, qtd_predios), estoque, predio, qtd_lados, qtd_niveis);
+        while(true){
+            estoque.imprimirEstoque(estoque);
+        }
     }
     
 }

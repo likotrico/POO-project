@@ -38,6 +38,7 @@ public class Predio {
                 if(pred.espaco[i][j].getProduto() != null){
                     Produto prod = pred.espaco[i][j].getProduto();
                     System.out.println("ID: "+prod.getCodigo()+" | Quantidade:"+pred.espaco[i][j].getQuantidade());
+                    System.out.println("Lado " + i+ "|"+ "Nivel " + j);
                 }
             }
         }
@@ -76,6 +77,19 @@ public class Predio {
                 }
             }
         }
+    }
+
+    public void inserir(Produto produto, int lado, int nivel, int qtd){
+        try{
+            espaco[lado][nivel].inserirProdutoEspaco(produto, qtd);
+            System.out.println("INSERIU PRÉDIO");
+        }catch(Exception e){
+            System.out.println("Problema ao inserir o Produto em um Espaço");
+        }
+    }
+
+    public int pegarCodigoProduto(int lado, int nivel){
+        return espaco[lado][nivel].pegarCodigoProduto();
     }
 
     //MOVER PRODUTO DE UM ESPACO PARA OUTRO

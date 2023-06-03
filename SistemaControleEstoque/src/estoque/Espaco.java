@@ -16,6 +16,14 @@ public class Espaco {
     public void inserirProdutoEspaco(Produto produto, int quantidade){
         setProduto(produto);
         setQuantidade(quantidade);
+        System.out.println("INSERIU ESPAÇO");
+    }
+
+    public int pegarCodigoProduto(){
+        if(produto != null){
+            return produto.pegarCodigoProduto();
+        }else return -1;
+        
     }
 
     //REMOVENDO UM PRODUTO EM UM ESPAÇO

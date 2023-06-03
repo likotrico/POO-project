@@ -27,6 +27,19 @@ public class Estoque {
         }
     }
 
+    public void iniciarEstoque(Estoque est, int pred, int lado, int nivel) {
+        //int num = Integer.parseInt(JOptionPane.showInputDialog("Quantos Prédios você deseja possuir?"));
+        est.criarPredios(pred);
+        //int quant_lado, quant_nivel;
+        //quant_lado = Integer.parseInt(JOptionPane.showInputDialog("Quantos lados você deseja?"));
+        //quant_nivel = Integer.parseInt(JOptionPane.showInputDialog("Quantos níveis você deseja?"));
+        for (int i = 0; i < pred; i++) {
+            System.out.println(i);
+            est.estoque[i] = new Predio(lado, nivel);
+            est.estoque[i].iniciarNovoPredio(lado, nivel);
+        }
+    }
+
     //INSERIR NOVO PRODUTO NO ESTOQUE
     public void inserirProdutoEstoque(Produto produto, int pred, int qtd){
         if(pred >= estoque.length){ //VERIFICANDO SE O PRÉDIO DIGITADO FOI VÁLIDO
@@ -34,6 +47,24 @@ public class Estoque {
         }else{
             estoque[pred].inserirProdutoPredio(produto, qtd);
         }
+    }
+
+    public void inserir(Produto produto, int pred, int lado, int nivel, int qtd){
+        //System.out.println("LADO:"+lado);
+        //System.out.println("NÍVEL:"+nivel);
+        if(pred >= estoque.length){ //VERIFICANDO SE O PRÉDIO DIGITADO FOI VÁLIDO
+            System.out.println("Prédio inexistente");
+        }else{
+            estoque[pred].inserir(produto, lado, nivel, qtd);
+            System.out.println("INSERIU ESTOQUE");
+        }
+        
+    }
+
+    public int pegarCodigoProduto(int predio, int lado, int nivel){
+        //System.out.println("Lado:"+lado);
+        //System.out.println("Nível:"+nivel);
+        return estoque[predio].pegarCodigoProduto(lado, nivel);
     }
 
     //MOVER UM PRODUTO EXISTENTE NO ESTOQUE PARA OUTRO ESPAÇO
