@@ -26,14 +26,42 @@ public class Espaco {
         
     }
 
+    public int pegarDiaValidade(){
+        if(produto != null){
+            return produto.getDia_val();
+        }else return -1;
+    }
+
+    public int pegarMesValidade(){
+        if(produto != null){
+            return produto.getMes_val();
+        }else return -1;
+    }
+
+    public int pegarAnoValidade(){
+        if(produto != null){
+            return produto.getAno_val();
+        }else return -1;
+    }
+
     //REMOVENDO UM PRODUTO EM UM ESPAÇO
-    public void remover(){
-        if(this.produto != null){
-            this.produto = null;
-            this.quantidade = 0;
+    public void remover(int qtd){
+        if(this.quantidade - qtd > 0){
+            if(this.produto != null){
+                this.quantidade = this.quantidade - qtd;
+            }else{
+                System.out.println("Não há produto no local indicado!");
+            }
+        }else if(this.quantidade - qtd == 0){
+            this.removerTudo();
         }else{
-            System.out.println("Não há produto no local indicado!");
+            System.out.println("Quantidade a ser removida é superior a quantidade presente!");
         }
+    }
+
+    public void removerTudo(){
+        this.quantidade = 0;
+        this.produto = null;
     }
 
     //SUBTRAIR QUANTIDADE

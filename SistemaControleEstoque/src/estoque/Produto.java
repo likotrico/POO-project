@@ -2,11 +2,12 @@ package estoque;
 
 public class Produto {
 
+    // -1 para tratar os casos de quando não tivermos informações do produto
     private int codigo = -1;
-    private double valor_venda;
-    private int ano_val;
-    private int mes_val;
-    private int dia_val;
+    private double valor_venda = -1;
+    private int ano_val = -1;
+    private int mes_val = -1;
+    private int dia_val = -1;
 
     public Produto(int codigo){
         this.codigo = codigo;
@@ -15,6 +16,11 @@ public class Produto {
     public int pegarCodigoProduto(){
         return this.codigo;
     }
+
+    public int pegarDiaValidade(){
+        return this.dia_val;
+    }
+
 
     /*GETTERS AND SETTERS */
 

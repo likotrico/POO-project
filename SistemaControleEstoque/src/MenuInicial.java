@@ -21,6 +21,7 @@ public class MenuInicial {
         //ADICIONANDO O BOTÃO CRIAR ESTOQUE
         JButton botao1 = new JButton();
         botao1.setFocusable(false);
+        botao1.addActionListener(e -> new MenuInicial_CriarEstoque());
         Font fonte1 = new Font("Criar Estoque", Font.BOLD, 17);
         botao1.setText(fonte1.getName());
         botao1.setBounds(75, 62, 150, 40);

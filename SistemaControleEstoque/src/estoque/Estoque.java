@@ -61,10 +61,29 @@ public class Estoque {
         
     }
 
+    public boolean existeProduto(int predio, int lado, int nivel){
+        return estoque[predio].existeProduto(lado, nivel);
+    }
+
+    //FUNÇÕES PARA PEGAR INFORMAÇÕES DO PRODUTO
     public int pegarCodigoProduto(int predio, int lado, int nivel){
-        //System.out.println("Lado:"+lado);
-        //System.out.println("Nível:"+nivel);
         return estoque[predio].pegarCodigoProduto(lado, nivel);
+    }
+
+    public int pegarDiaValidade(int predio, int lado, int nivel){
+        return estoque[predio].pegarDiaValidade(lado, nivel);
+    }
+
+    public int pegarMesValidade(int predio, int lado, int nivel){
+        return estoque[predio].pegarMesValidade(lado, nivel);
+    }
+
+    public int pegarAnoValidade(int predio, int lado, int nivel){
+        return estoque[predio].pegarAnoValidade(lado, nivel);
+    }
+
+    public int pegarQuantidade(int predio, int lado, int nivel){
+        return estoque[predio].pegarQuantidade(lado, nivel);
     }
 
     //MOVER UM PRODUTO EXISTENTE NO ESTOQUE PARA OUTRO ESPAÇO
@@ -80,11 +99,20 @@ public class Estoque {
     }
 
     //REMOVER UM PRODUTO NO ESTOQUE
-    public void removerProdutoEstoque(int pred){
+    /*public void removerProdutoEstoque(int pred){
         if(pred >= estoque.length){ //VERIFICANDO SE O PRÉDIO DIGITADO FOI VÁLIDO
             System.out.println("Prédio inexistente");
         }else{
             estoque[pred].removerProdutoPredio();
+        }
+    }*/
+
+    public void remover(int predio, int lado, int nivel, int qtd){
+        try{
+            estoque[predio].remover(lado, nivel, qtd);
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.println("Problema ao remover o produto!");
         }
     }
 

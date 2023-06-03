@@ -92,6 +92,22 @@ public class Predio {
         return espaco[lado][nivel].pegarCodigoProduto();
     }
 
+    public int pegarDiaValidade(int lado, int nivel){
+        return espaco[lado][nivel].pegarDiaValidade();
+    }
+
+    public int pegarMesValidade(int lado, int nivel){
+        return espaco[lado][nivel].pegarMesValidade();
+    }
+
+    public int pegarAnoValidade(int lado, int nivel){
+        return espaco[lado][nivel].pegarAnoValidade();
+    }
+
+    public int pegarQuantidade(int lado, int nivel){
+        return espaco[lado][nivel].getQuantidade();
+    }
+
     //MOVER PRODUTO DE UM ESPACO PARA OUTRO
     public void subtrairPredio(int lado_part, int nivel_part, int qtd, Produto produto){
         if(produto.getCodigo() == espaco[lado_part][nivel_part].getProduto().getCodigo()) espaco[lado_part][nivel_part].subtrairQuantidade(qtd);
@@ -100,7 +116,7 @@ public class Predio {
 
 
     //REMOVER PRODUTO EM UM ESPAÇO
-    public void removerProdutoPredio(){
+    public void removerProdutoPredio(int qtd){
         while(true){
             int side = Integer.parseInt(JOptionPane.showInputDialog("Em qual lado deseja remover?"));
             if(side > this.quant_lado - 1 || side <= 0){ //VALIDANDO O LADO
@@ -110,10 +126,18 @@ public class Predio {
                 if(level > this.quant_nivel - 1 || level <= 0){//VALIDANDO O NÍVEL
                     System.out.println("Nível inexistente");
                 }else{
-                    espaco[side][level].remover();
+                    espaco[side][level].remover(qtd);
                     break;
                 }
             }
+        }
+    }
+
+    public void remover(int lado, int nivel, int qtd){
+        try{
+            espaco[lado][nivel].remover(qtd);
+        }catch(Exception e){
+            System.out.println("Problema ao remover o produto!");
         }
     }
 

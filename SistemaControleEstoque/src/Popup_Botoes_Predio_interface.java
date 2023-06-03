@@ -168,7 +168,7 @@ public class Popup_Botoes_Predio_interface {
 
         //ADICIONANDO O BOTÃO ADICIONAR
         JButton botao1 = new JButton();
-        botao1.addActionListener( e -> new Popup_Adicionar_Produto(frameprincipal, estoque, predio, lado, nivel));
+        botao1.addActionListener( e -> new Popup_Adicionar_Produto(frameprincipal, this, estoque, predio, lado, nivel));
         botao1.setFocusable(false);
         botao1.setText("Adicionar");
         botao1.setBounds(105, 160, 100, 25);
@@ -183,6 +183,7 @@ public class Popup_Botoes_Predio_interface {
 
         //ADICIONANDO O BOTÃO REMOVER
         JButton botao3 = new JButton();
+        botao3.addActionListener(e -> new Popup_Remover_Produto(frameprincipal, this, estoque, predio, lado, nivel));
         botao3.setFocusable(false);
         botao3.setText("Remover");
         botao3.setBounds(105, 220, 100, 25);
@@ -218,8 +219,42 @@ public class Popup_Botoes_Predio_interface {
         this.frame.add(this.botaoRemover);
         this.frame.add(this.botaoCancelar);
 
+        this.atualizarInformacoes(estoque, predio, lado, nivel);
         this.frame.setVisible(true);
     }
+
+    //ATUALIZANDO AS INFORMAÇÕES QUE ESTARÃO PRESENTES NO POPUP
+    public void atualizarInformacoes(Estoque estoque, int predio, int lado, int nivel){
+        //PEGANDO O CÓDIGO
+        int codigoproduto = estoque.pegarCodigoProduto(predio, lado, nivel);
+        if(codigoproduto == -1){
+            this.informacaoProdutoCodigo.setText("");    
+        }else{
+            this.informacaoProdutoCodigo.setText("\t"+codigoproduto);
+        }
+
+        String data = "";
+        int diaValidade = estoque.pegarDiaValidade(predio, lado, nivel);
+        int mesValidade = estoque.pegarMesValidade(predio, lado, nivel);
+        int anoValidade = estoque.pegarAnoValidade(predio, lado, nivel);
+        if(diaValidade > 0 && mesValidade > 0 && anoValidade > 0){
+            data = "\t"+diaValidade+" / "+mesValidade+" / "+anoValidade;
+        }else if(diaValidade <= 0 && mesValidade > 0 && anoValidade > 0){
+            data = "\t"+mesValidade+" /" +anoValidade;
+        }else if(diaValidade <= 0 && mesValidade <= 0 && anoValidade > 0){
+            data = "\t"+anoValidade;
+        }
+
+        System.out.println(data);
+        this.informacaoValidade.setText(data);
+
+        int quantidade = estoque.pegarQuantidade(predio, lado, nivel);
+        if(quantidade > 0){
+            this.informacaoQuantidade.setText("\t"+quantidade);
+        }else this.informacaoQuantidade.setText("");
+
+    }
+
 
     /*GETTERS AND SETTERS */
     public JFrame getFrame() {

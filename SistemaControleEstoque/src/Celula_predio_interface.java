@@ -191,10 +191,12 @@ public class Celula_predio_interface extends JPanel{
         int i, j;
         for(i=0; i<qtd_colunas; i++){
             for(j=0; j<qtd_linhas; j++){
-                if(estoque.pegarCodigoProduto(this.predio-1, i, j) != -1){
+                if((estoque.pegarCodigoProduto(this.predio-1, i, j) != -1 )&&(estoque.existeProduto(this.predio-1, i, j))){
                     lista_boteos[j][i].setText(""+estoque.pegarCodigoProduto(this.predio - 1, i, j));
+                }else{
+                    lista_boteos[j][i].setText("");
                 }
-                //System.out.println(lista_boteos[j][i].getText());
+               
             }
         }
 

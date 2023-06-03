@@ -1,5 +1,9 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.InputMismatchException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -106,6 +110,7 @@ public class MenuInicial_CriarEstoque {
         //ADICIONANDO O JBUTTON CRIAR
         JButton botao1 = new JButton();
         botao1.setFocusable(false);
+        botao1.addActionListener(e -> criarEstoque());
         Font fontebotao = new Font("Criar", Font.BOLD, 15);
         botao1.setFont(fontebotao);
         botao1.setText(fontebotao.getName());
@@ -141,6 +146,34 @@ public class MenuInicial_CriarEstoque {
 
         this.frame.setVisible(true);
     }
+
+    public void criarEstoque(){
+        
+        if(inputPredio.getText().matches("[0-9]*") && inputLado.getText().matches("[0-9]*") && inputNivel.getText().matches("[0-9]*")){
+            int qtd_predio = Integer.parseInt(inputPredio.getText());
+            int qtd_lado = Integer.parseInt(inputLado.getText());
+            int qtd_nivel = Integer.parseInt(inputNivel.getText());
+
+            String nome = ""+inputNomeEstoque.getText();
+            try{
+                File file = new File(nome+".csv");
+                file.createNewFile();
+                BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+                bw.write("qtd_predio;qtd_lado;qtd_nivel\n");
+                bw.write(qtd_predio+";"+qtd_lado+";"+qtd_nivel);
+                bw.flush();
+                bw.close();
+                this.frame.dispose();
+            }catch(Exception e){
+                //e.printStackTrace();
+                System.out.println("Erro ao criar o arquivo "+nome);
+            }
+        }else{
+            System.out.println("Digite um valor válido");
+        }
+    }
+
+
 
     public static void main(String[] args) {
         MenuInicial_CriarEstoque menuCriarEstoque = new MenuInicial_CriarEstoque();
