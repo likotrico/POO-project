@@ -13,14 +13,14 @@ public class Popup_Remover_Produto {
     
     public JFrame frame; //OK
 
-    public JLabel textoRemoverProduto;
-    public JLabel textoQuantidade;
+    public JLabel textoRemoverProduto; //OK
+    public JLabel textoQuantidade; //OK
 
-    public JTextField inputQuantidadeRemover;
+    public JTextField inputQuantidadeRemover; //OK
 
-    public JButton botaoRemover;
-    public JButton botaoRemoverTudo;
-    public JButton botaoCancelar;
+    public JButton botaoRemover; //OK
+    public JButton botaoRemoverTudo; //OK
+    public JButton botaoCancelar; //OK
 
     public Popup_Remover_Produto(JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup, Estoque estoque, int predio, int lado, int nivel){
 
@@ -69,6 +69,7 @@ public class Popup_Remover_Produto {
 
         //ADICIONANDO O BOTÃO REMOVER TUDO
         JButton botao2 = new JButton();
+        botao2.addActionListener(e -> this.removerTudo(frameprincipal, popup, estoque, predio, lado, nivel));
         botao2.setFocusable(false);
         Font fontebotao2 = new Font("Remover Tudo", Font.BOLD, 13);
         botao2.setFont(fontebotao2);
@@ -110,6 +111,14 @@ public class Popup_Remover_Produto {
         }else{
             System.out.println("Digite um valor válido!");
         }
+
+        this.frame.dispose();
+        frameprincipal.atualizarOsBotoes(estoque);
+        popup.atualizarInformacoes(estoque, predio, lado, nivel);
+    }
+
+    public void removerTudo(JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup, Estoque estoque, int predio, int lado, int nivel){
+        estoque.removerTudo(predio, lado, nivel);
 
         this.frame.dispose();
         frameprincipal.atualizarOsBotoes(estoque);

@@ -41,12 +41,20 @@ public class Estoque {
     }
 
     //INSERIR NOVO PRODUTO NO ESTOQUE
-    public void inserirProdutoEstoque(Produto produto, int pred, int qtd){
+    /*public void inserirProdutoEstoque(Produto produto, int pred, int qtd){
         if(pred >= estoque.length){ //VERIFICANDO SE O PRÉDIO DIGITADO FOI VÁLIDO
             System.out.println("Prédio inexistente");
         }else{
             estoque[pred].inserirProdutoPredio(produto, qtd);
         }
+    }*/
+
+    public void subtrairQuantidade(int predio_part, int lado_part, int nivel_part, int qtd){
+        estoque[predio_part].subtrairQuantidade(lado_part, nivel_part, qtd);
+    }
+
+    public void incrementarQuantidade(int predio_dest, int lado_dest, int nivel_dest, int qtd){
+        estoque[predio_dest].incrementarQuantidade(lado_dest, nivel_dest, qtd);
     }
 
     public void inserir(Produto produto, int pred, int lado, int nivel, int qtd){
@@ -61,9 +69,6 @@ public class Estoque {
         
     }
 
-    public boolean existeProduto(int predio, int lado, int nivel){
-        return estoque[predio].existeProduto(lado, nivel);
-    }
 
     //FUNÇÕES PARA PEGAR INFORMAÇÕES DO PRODUTO
     public int pegarCodigoProduto(int predio, int lado, int nivel){
@@ -87,7 +92,7 @@ public class Estoque {
     }
 
     //MOVER UM PRODUTO EXISTENTE NO ESTOQUE PARA OUTRO ESPAÇO
-    public void moverProdutoEstoque(int pred_part, int lado_part, int nivel_part, int qtd, int pred_dest, int lado_dest, int nivel_dest, Produto produto){
+    /*public void moverProdutoEstoque(int pred_part, int lado_part, int nivel_part, int qtd, int pred_dest, int lado_dest, int nivel_dest, Produto produto){
         estoque[pred_part].subtrairPredio(lado_part, nivel_part, qtd, produto);
         if(estoque[pred_dest].existeProduto(lado_dest, nivel_dest)){
             if(estoque[pred_dest].mesmoProduto(lado_dest, nivel_dest, produto)){
@@ -96,6 +101,28 @@ public class Estoque {
         }else{
             inserirProdutoEstoque(produto, pred_dest, qtd);
         }
+    }*/
+
+    public boolean mesmoProduto(int predio_part, int lado_part, int nivel_part, /*int dia_part, int mes_part, int ano_part,*/int predio_dest, int lado_dest, int nivel_dest /*, int dia_dest, int mes_dest, int ano_dest*/){
+        if(estoque[predio_part].pegarCodigoProduto(lado_part, nivel_part) == estoque[predio_dest].pegarCodigoProduto(lado_dest, nivel_dest)){
+            if(estoque[predio_part].pegarDiaValidade(lado_part, nivel_part) == estoque[predio_dest].pegarDiaValidade(lado_dest, nivel_dest)){
+                if(estoque[predio_part].pegarMesValidade(lado_part, nivel_part) == estoque[predio_dest].pegarMesValidade(lado_dest, nivel_dest)){
+                    if(estoque[predio_part].pegarAnoValidade(lado_part, nivel_part) == estoque[predio_dest].pegarAnoValidade(lado_dest, nivel_dest)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean existeProduto(int predio, int lado, int nivel){
+        return estoque[predio].existeProduto(lado, nivel);
+    }
+
+    public void mover(int pred_part, int lado_part, int nivel_part, int qtd, int pred_dest, int lado_dest, int nivel_dest, Produto produto){
+
+
     }
 
     //REMOVER UM PRODUTO NO ESTOQUE
@@ -110,6 +137,15 @@ public class Estoque {
     public void remover(int predio, int lado, int nivel, int qtd){
         try{
             estoque[predio].remover(lado, nivel, qtd);
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.println("Problema ao remover o produto!");
+        }
+    }
+
+    public void removerTudo(int predio, int lado, int nivel){
+        try{
+            estoque[predio].removerTudo(lado, nivel);
         }catch(Exception e){
             e.printStackTrace();
             System.out.println("Problema ao remover o produto!");

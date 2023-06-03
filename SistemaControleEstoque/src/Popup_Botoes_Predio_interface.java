@@ -176,6 +176,7 @@ public class Popup_Botoes_Predio_interface {
 
         //ADICIONANDO O BOTÃO MOVER
         JButton botao2 = new JButton();
+        botao2.addActionListener(e -> new Popup_Mover_Produto(frameprincipal, this, estoque, predio, lado, nivel));
         botao2.setFocusable(false);
         botao2.setText("Mover");
         botao2.setBounds(105, 190, 100, 25);
