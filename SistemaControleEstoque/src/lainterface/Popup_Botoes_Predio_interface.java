@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import estoque.Estoque;
+import usuarios.Interno;
+import usuarios.TipoInterno;
 
 public class Popup_Botoes_Predio_interface {
     
@@ -35,7 +37,7 @@ public class Popup_Botoes_Predio_interface {
     private int lado;
     private int nivel;
 
-    public Popup_Botoes_Predio_interface(JframePrincipal frameprincipal, Estoque estoque,  int predio, int lado, int nivel){
+    public Popup_Botoes_Predio_interface(String nomeEstoque, Interno interno, JframePrincipal frameprincipal, Estoque estoque,  int predio, int lado, int nivel){
         this.predio = predio;
         this.lado = lado;
         this.nivel = nivel;
@@ -169,11 +171,15 @@ public class Popup_Botoes_Predio_interface {
 
         //ADICIONANDO O BOTÃO ADICIONAR
         JButton botao1 = new JButton();
-        botao1.addActionListener( e -> new Popup_Adicionar_Produto(frameprincipal, this, estoque, predio, lado, nivel));
+        botao1.addActionListener( e -> new Popup_Adicionar_Produto(nomeEstoque, frameprincipal, this, estoque, predio, lado, nivel));
         botao1.setFocusable(false);
         botao1.setText("Adicionar");
         botao1.setBounds(105, 160, 100, 25);
+        //VERIFICANDO SE O USUÁRIO TEM PERMISSÃO PARA ACESSAR O CONTEÚDO DESSE BOTÃO
+        if(interno.getTipoInterno() == TipoInterno.ADM) botao1.setEnabled(true);
+        else botao1.setEnabled(false);
         this.botaoAdicionar = botao1;
+        
 
         //ADICIONANDO O BOTÃO MOVER
         JButton botao2 = new JButton();
@@ -181,6 +187,9 @@ public class Popup_Botoes_Predio_interface {
         botao2.setFocusable(false);
         botao2.setText("Mover");
         botao2.setBounds(105, 190, 100, 25);
+        //VERIFICANDO SE O USUÁRIO TEM PERMISSÃO PARA ACESSAR O CONTEÚDO DESSE BOTÃO
+        if(interno.getTipoInterno() == TipoInterno.ADM) botao2.setEnabled(true);
+        else botao2.setEnabled(false);
         this.botaoMover = botao2;
 
         //ADICIONANDO O BOTÃO REMOVER
@@ -189,6 +198,9 @@ public class Popup_Botoes_Predio_interface {
         botao3.setFocusable(false);
         botao3.setText("Remover");
         botao3.setBounds(105, 220, 100, 25);
+        //VERIFICANDO SE O USUÁRIO TEM PERMISSÃO PARA ACESSAR O CONTEÚDO DESSE BOTÃO
+        if(interno.getTipoInterno() == TipoInterno.ADM) botao3.setEnabled(true);
+        else botao3.setEnabled(false);
         this.botaoRemover = botao3;
 
         //ADICIONANDO O BOTÃO CANCELAR

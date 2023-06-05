@@ -4,12 +4,16 @@ import java.awt.Font;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.InputMismatchException;
-
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import estoque.Estoque;
+import usuarios.Interno;
+import usuarios.TipoInterno;
 
 public class MenuInicial_CriarEstoque {
     
@@ -29,7 +33,7 @@ public class MenuInicial_CriarEstoque {
     private JButton botaoCriarEstoque;
     private JButton botaoCancelar;
 
-    public MenuInicial_CriarEstoque(){
+    public MenuInicial_CriarEstoque(Interno interno, MenuInicial menuinicial){
         //ADICIONANDO O JFRAME
         JFrame frame = new JFrame();
         frame.setLayout(null);
@@ -38,7 +42,7 @@ public class MenuInicial_CriarEstoque {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.frame = frame;
 
-        //ADICIONANDO O JLABEL TEXTO NOME ESTOQUE
+        //ADICIONANDO O JLABEL TEXTO CRIAR NOVO ESTOQUE
         JLabel label1 = new JLabel();
         label1.setBackground(Color.RED);
         //label1.setOpaque(true);
@@ -111,7 +115,7 @@ public class MenuInicial_CriarEstoque {
         //ADICIONANDO O JBUTTON CRIAR
         JButton botao1 = new JButton();
         botao1.setFocusable(false);
-        botao1.addActionListener(e -> criarEstoque());
+        botao1.addActionListener(e -> criarEstoque(interno, menuinicial));
         Font fontebotao = new Font("Criar", Font.BOLD, 15);
         botao1.setFont(fontebotao);
         botao1.setText(fontebotao.getName());
@@ -148,7 +152,7 @@ public class MenuInicial_CriarEstoque {
         this.frame.setVisible(true);
     }
 
-    public void criarEstoque(){
+    public void criarEstoque(Interno interno, MenuInicial menuinicial){
         
         if(inputPredio.getText().matches("[0-9]*") && inputLado.getText().matches("[0-9]*") && inputNivel.getText().matches("[0-9]*")){
             int qtd_predio = Integer.parseInt(inputPredio.getText());
@@ -157,14 +161,41 @@ public class MenuInicial_CriarEstoque {
 
             String nome = ""+inputNomeEstoque.getText();
             try{
-                File file = new File(nome+".csv");
+                qtd_predio = Integer.parseInt(inputPredio.getText());
+                qtd_lado = Integer.parseInt(inputLado.getText());
+                qtd_nivel = Integer.parseInt(inputNivel.getText());
+
+                String path = "SistemaControleEstoque/src/arquivosEstoque/"+nome;
+                Files.createDirectory(Paths.get(path));
+                String pathProdutosEstoque = "SistemaControleEstoque/src/arquivosEstoque/"+nome+"/"+nome+"ProdutosEstoque";
+                Files.createDirectory(Paths.get(pathProdutosEstoque));
+                
+                File file = new File(path+"/"+nome+".csv");
                 file.createNewFile();
+
+                File produtosEstoque = new File(pathProdutosEstoque+"/"+nome+"ProdutosEstoque.csv");
+                produtosEstoque.createNewFile();
+
                 BufferedWriter bw = new BufferedWriter(new FileWriter(file));
                 bw.write("qtd_predio;qtd_lado;qtd_nivel\n");
                 bw.write(qtd_predio+";"+qtd_lado+";"+qtd_nivel);
                 bw.flush();
                 bw.close();
+
+                BufferedWriter bw2 = new BufferedWriter(new FileWriter(produtosEstoque));
+                bw2.write("predio;lado;nivel;codigo;dia;mes;ano;quantidade\n");
+                bw2.flush();
+                bw2.close();
+
                 this.frame.dispose();
+                menuinicial.fecharJanela();
+
+                Estoque estoque = new Estoque();
+                estoque.iniciarEstoque(estoque, qtd_predio, qtd_lado, qtd_nivel);
+                JframePrincipal framePrincipal = new JframePrincipal();
+                framePrincipal.iniciarFrame(nome, interno, framePrincipal, estoque, qtd_lado, qtd_nivel, qtd_predio);
+
+                
             }catch(Exception e){
                 //e.printStackTrace();
                 System.out.println("Erro ao criar o arquivo "+nome);
@@ -177,7 +208,10 @@ public class MenuInicial_CriarEstoque {
 
 
     public static void main(String[] args) {
-        MenuInicial_CriarEstoque menuCriarEstoque = new MenuInicial_CriarEstoque();
+        Interno interno = new Interno();
+        interno.setNome("likotrico");
+        interno.setTipoInterno(TipoInterno.ADM);
+        //MenuInicial_CriarEstoque menuCriarEstoque = new MenuInicial_CriarEstoque(interno);
     }
 
     public JFrame getFrame() {

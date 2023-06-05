@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 
 import estoque.Estoque;
+import usuarios.Interno;
 
 public class Painel_predios_interface extends JPanel{
     
@@ -13,7 +14,7 @@ public class Painel_predios_interface extends JPanel{
     int qtd_niveis;
     int qtd_lados;
 
-    public Painel_predios_interface(JframePrincipal frameprincipal, Estoque estoque, int qtd_predios, int qtd_niveis, int qtd_lados, int largura_painel, int altura_painel){
+    public Painel_predios_interface(String nomeEstoque, Interno interno, JframePrincipal frameprincipal, Estoque estoque, int qtd_predios, int qtd_niveis, int qtd_lados, int largura_painel, int altura_painel){
         this.setBounds(0, 0, largura_painel, altura_painel);
         this.setPreferredSize(new Dimension(largura_painel, altura_painel));
         this.setLayout(null);
@@ -24,18 +25,18 @@ public class Painel_predios_interface extends JPanel{
         this.qtd_niveis = qtd_niveis;
         this.qtd_lados = qtd_lados;
 
-        this.criarPredios(frameprincipal, estoque);
+        this.criarPredios(nomeEstoque, interno, frameprincipal, estoque);
         this.setarPosicoesPredios();
         this.corrigirDimensoesPainel();
         this.inserirPrediosPainel();
     }
 
     //CRIANDO AS CELULAS DE CADA PRÉDIO
-    public void criarPredios(JframePrincipal frameprincipal, Estoque estoque){
+    public void criarPredios(String nomeEstoque, Interno interno, JframePrincipal frameprincipal, Estoque estoque){
         predios = new Celula_predio_interface[qtd_predios];
         int i;
         for(i = 0; i<qtd_predios; i++){
-            predios[i] = new Celula_predio_interface(frameprincipal, estoque, qtd_lados, qtd_niveis, i+1, 370, 370);
+            predios[i] = new Celula_predio_interface(nomeEstoque, interno, frameprincipal, estoque, qtd_lados, qtd_niveis, i+1, 370, 370);
         }
     }
 

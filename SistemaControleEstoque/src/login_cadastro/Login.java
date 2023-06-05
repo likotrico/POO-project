@@ -126,8 +126,8 @@ public class Login extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Login realizado com sucesso");
                 Interno interno = new Interno();
                 interno = pegarNomeADM();
-                new MenuInicial();
-                //dispose();
+                new MenuInicial(interno);
+                dispose();
             }
             else {
                 JOptionPane.showMessageDialog(null, "Email e/ou senha e/ou categoria inválida(s)", null, JOptionPane.ERROR_MESSAGE);
@@ -242,7 +242,7 @@ public class Login extends javax.swing.JFrame {
     }
 
     private Interno pegarNomeADM(){
-        String file = "administrador.csv";
+        String file = "SistemaControleEstoque/src/db/administrador.csv";
         BufferedReader reader = null;
         String line = "";
         try {

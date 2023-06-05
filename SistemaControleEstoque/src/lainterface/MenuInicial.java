@@ -1,6 +1,10 @@
 package lainterface;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+
+import usuarios.Interno;
+import usuarios.TipoInterno;
+
 import java.awt.Font;
 
 public class MenuInicial {
@@ -10,7 +14,7 @@ public class MenuInicial {
     private JButton botaoCarregarEstoque; //OK
     private JButton botaoSair; //OK
  
-    public MenuInicial(){
+    public MenuInicial(Interno interno){
         //CRIANDO JFRAME
         JFrame frame = new JFrame();
         frame.setLayout(null);
@@ -22,15 +26,19 @@ public class MenuInicial {
         //ADICIONANDO O BOTÃO CRIAR ESTOQUE
         JButton botao1 = new JButton();
         botao1.setFocusable(false);
-        botao1.addActionListener(e -> new MenuInicial_CriarEstoque());
+        botao1.addActionListener(e -> new MenuInicial_CriarEstoque(interno, this));
         Font fonte1 = new Font("Criar Estoque", Font.BOLD, 17);
         botao1.setText(fonte1.getName());
         botao1.setBounds(75, 62, 150, 40);
         this.botaoCriarEstoque = botao1;
+        //VERIFICANDO SE O USUÁRIO TEM PERMISSÃO PARA ACESSAR O CONTEÚDO DESSE BOTÃO
+        if(interno.getTipoInterno() == TipoInterno.ADM) botao1.setEnabled(true);
+        else botao1.setEnabled(false);
 
         //ADICIONANDO O BOTÃO CARREGAR ESTOQUE
         JButton botao2 = new JButton();
         botao2.setFocusable(false);
+        botao2.addActionListener(e -> new MenuInicial_CarregarEstoque());
         Font fonte2 = new Font("Carregar Estoque", Font.BOLD, 17);
         botao2.setText(fonte2.getName());
         botao2.setBounds(75, 117, 150, 40);
@@ -55,10 +63,12 @@ public class MenuInicial {
     }
 
     public static void main(String[] args) {
-        MenuInicial menu = new MenuInicial();
+        //MenuInicial menu = new MenuInicial();
     }
 
-    
+    public void fecharJanela(){
+        this.frame.dispose();
+    }
 
 
 

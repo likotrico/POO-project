@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import estoque.Estoque;
+import usuarios.Interno;
+import usuarios.TipoInterno;
 
 public class Celula_predio_interface extends JPanel{
 
@@ -22,7 +24,7 @@ public class Celula_predio_interface extends JPanel{
     private int predio;
 
     /*CONSTRUTOR */
-    public Celula_predio_interface(JframePrincipal frameprincipal, Estoque estoque, int qtd_lados, int qtd_niveis, int predio, int largura, int altura){
+    public Celula_predio_interface(String nomeEstoque, Interno interno, JframePrincipal frameprincipal, Estoque estoque, int qtd_lados, int qtd_niveis, int predio, int largura, int altura){
         this.setPreferredSize(new Dimension(largura, altura)); //Criando o Jpainel com as dimensões
         this.setLayout(null); //Colocando o Layout da Panel
         this.setBounds(0, 0, largura, altura);
@@ -46,7 +48,7 @@ public class Celula_predio_interface extends JPanel{
         texto_principal.setBackground(Color.blue);
         texto_principal.setBounds(0,0,largura,50);
         this.add(texto_principal);
-        this.criarBotoes(frameprincipal, estoque);
+        this.criarBotoes(nomeEstoque, interno, frameprincipal, estoque);
     }
 
     public Celula_predio_interface(){
@@ -57,7 +59,7 @@ public class Celula_predio_interface extends JPanel{
         this.lista_boteos = new JButton[qtd_linhas][qtd_colunas];
     }
 
-    public void criarBotoes(JframePrincipal frameprincipal, Estoque estoque){
+    public void criarBotoes(String nomeEstoque, Interno interno, JframePrincipal frameprincipal, Estoque estoque){
         int i, j;
         int x = 0, y = 50;
         this.largura = x;
@@ -70,7 +72,7 @@ public class Celula_predio_interface extends JPanel{
                 //b.setText(""+i+j);
                 b.setBounds(x, y, 70, 70);
                 b.setFocusable(false);
-                b.addActionListener(e -> new Popup_Botoes_Predio_interface(frameprincipal, estoque, this.predio - 1, lado - 1, nivel - 1));
+                b.addActionListener(e -> new Popup_Botoes_Predio_interface(nomeEstoque, interno, frameprincipal, estoque, this.predio - 1, lado - 1, nivel - 1));
                 this.add(b);
                 this.lista_boteos[nivel - 1][lado - 1] = b;
                 y+=70;
@@ -120,10 +122,14 @@ public class Celula_predio_interface extends JPanel{
         frame.setSize(largura+100, altura+100);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
-        Celula_predio_interface teste = new Celula_predio_interface(new JframePrincipal(), estoque, qtd_lados, qtd_niveis, predio, largura, altura);
 
-        frame.add(teste);
+        Interno interno = new Interno();
+        interno.setNome("likotrico");
+        interno.setTipoInterno(TipoInterno.ADM);
+        
+        //Celula_predio_interface teste = new Celula_predio_interface(interno, new JframePrincipal(), estoque, qtd_lados, qtd_niveis, predio, largura, altura);
+
+        //frame.add(teste);
         frame.setVisible(true);
         while(true){
             estoque.imprimirEstoque(estoque);

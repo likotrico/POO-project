@@ -3,6 +3,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,7 +36,7 @@ public class Popup_Adicionar_Produto {
     private JButton botaoAdicionar;
     private JButton botaoCancelar;
 
-    public Popup_Adicionar_Produto(JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup ,Estoque estoque, int predio, int lado, int nivel){
+    public Popup_Adicionar_Produto(String nomeEstoque, JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup ,Estoque estoque, int predio, int lado, int nivel){
 
         JFrame frame = new JFrame();
         frame.setLayout(null);
@@ -142,7 +147,7 @@ public class Popup_Adicionar_Produto {
         //ADICIONANDO BOTAO ADICIONAR
         JButton botao1 = new JButton();
         botao1.setFocusable(false);
-        botao1.addActionListener(e -> adicionar(frameprincipal, popup, estoque, predio, lado, nivel));
+        botao1.addActionListener(e -> adicionar(nomeEstoque, frameprincipal, popup, estoque, predio, lado, nivel));
         Font fontebotao1 = new Font("Adicionar", Font.BOLD, 13);
         botao1.setFont(fontebotao1);
         botao1.setText(fontebotao1.getName());
@@ -182,14 +187,28 @@ public class Popup_Adicionar_Produto {
         this.frame.setVisible(true);
     }
 
-    public void adicionar(JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup ,Estoque estoque, int predio, int lado, int nivel){
+    public void adicionar(String nomeEstoque, JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup ,Estoque estoque, int predio, int lado, int nivel){
         Produto produto = new Produto(Integer.parseInt(this.inputCodigoProduto.getText()));
         produto.setDia_val(Integer.parseInt(this.inputDiaValidade.getText()));
         produto.setMes_val(Integer.parseInt(this.inputMesValidade.getText()));
         produto.setAno_val(Integer.parseInt(this.inputAnoValidade.getText()));
         
         estoque.inserir(produto, predio, lado, nivel, Integer.parseInt(this.inputQuantidadeProduto.getText()));
-
+        /*remover linha abaixo e colocar como parametro */
+        //String nomeEstoque = "teste123";
+        
+        String path = "SistemaControleEstoque/src/arquivosEstoque/"+nomeEstoque+"/"+nomeEstoque+"ProdutosEstoque"+"/"+nomeEstoque+"ProdutosEstoque.csv";
+        File file = new File(path);
+        BufferedWriter bw;
+        try {
+            bw = new BufferedWriter(new FileWriter(file, true));
+            bw.write(predio+";"+lado+";"+nivel+";"+produto.getCodigo()+";"+produto.getDia_val()+";"+produto.getMes_val()+";"+produto.getAno_val()+";"+this.inputQuantidadeProduto.getText()+"\n");
+            bw.flush();
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         frameprincipal.atualizarOsBotoes(estoque);
         this.frame.dispose();
         popup.atualizarInformacoes(estoque, predio, lado, nivel);
