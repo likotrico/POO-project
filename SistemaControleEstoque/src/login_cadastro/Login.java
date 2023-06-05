@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 
+import lainterface.MenuInicial;
 import usuarios.*;
 
 /**
@@ -123,6 +124,9 @@ public class Login extends javax.swing.JFrame {
         else {
             if(AutenticarAdm()) {
                 JOptionPane.showMessageDialog(null, "Login realizado com sucesso");
+                Interno interno = new Interno();
+                interno = pegarNomeADM();
+                new MenuInicial();
                 dispose();
             }
             else {
@@ -234,4 +238,33 @@ public class Login extends javax.swing.JFrame {
         }
         return result;
     }
+
+    private Interno pegarNomeADM(){
+        String file = "administrador.csv";
+        BufferedReader reader = null;
+        String line = "";
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(";");
+                for (int i = 0; i < (row.length - 1); i++) {
+                    if (row[i].equals(txtEmail.getText()) && row[i + 1].equals(txtSenhaUsuario.getText())) {
+                        Interno interno = new Interno();
+                        String nome = row[i-1];
+                        interno.setNome(nome);
+                        interno.setEmail(row[i]);
+                        interno.setSenha(row[i+1]);
+                        interno.setTipoInterno(TipoInterno.ADM);
+                        return interno;
+                    }
+                }
+            }
+            
+        } catch (HeadlessException | IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+        }
+        return new Interno();
+    }
+
 }
