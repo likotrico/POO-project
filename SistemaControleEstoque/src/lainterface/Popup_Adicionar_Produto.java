@@ -48,7 +48,7 @@ public class Popup_Adicionar_Produto {
         //ADICIONANDO TEXTO ADICIONAR PRODUTO
         JLabel label1 = new JLabel();
         label1.setBackground(Color.BLUE);
-        label1.setOpaque(true);
+        //label1.setOpaque(true);
         Font fonte1 = new Font("Adicionar Produto", Font.BOLD, 20);
         label1.setFont(fonte1);
         label1.setText(fonte1.getName());
@@ -58,7 +58,7 @@ public class Popup_Adicionar_Produto {
         //ADICIONANDO O TEXTO CÓDIGO PRODUTO
         JLabel label2 = new JLabel();
         label2.setBackground(Color.RED);
-        label2.setOpaque(true);
+        //label2.setOpaque(true);
         Font fonte2 = new Font("Código:", Font.BOLD, 15);
         label2.setFont(fonte2);
         label2.setText(fonte2.getName());
@@ -73,7 +73,7 @@ public class Popup_Adicionar_Produto {
         //ADICIONANDO O TEXTO VALIDADE PRODUTO
         JLabel label3 = new JLabel();
         label3.setBackground(Color.GREEN);
-        label3.setOpaque(true);
+        //label3.setOpaque(true);
         Font fonte3 = new Font("Validade:", Font.BOLD, 15);
         label3.setFont(fonte3);
         label3.setText(fonte3.getName());
@@ -93,7 +93,7 @@ public class Popup_Adicionar_Produto {
         //ADICIONANDO BARRINHA 
         JLabel barrinha = new JLabel();
         barrinha.setBackground(Color.gray);
-        barrinha.setOpaque(true);
+        //barrinha.setOpaque(true);
         Font fonteBarrinha = new Font("/", Font.BOLD, 15);
         barrinha.setFont(fonteBarrinha);
         barrinha.setText(fonteBarrinha.getName());
@@ -113,7 +113,7 @@ public class Popup_Adicionar_Produto {
         //ADICIONANDO BARRINHA2
         JLabel barrinha2 = new JLabel();
         barrinha2.setBackground(Color.gray);
-        barrinha2.setOpaque(true);
+        //barrinha2.setOpaque(true);
         barrinha2.setFont(fonteBarrinha);
         barrinha2.setText(fonteBarrinha.getName());
         barrinha2.setBounds(165, 90, 5, 30);
@@ -132,7 +132,7 @@ public class Popup_Adicionar_Produto {
         //ADICIONANDO JLABEL TEXTO QUANTIDADE
         JLabel label4 = new JLabel();
         label4.setBackground(Color.YELLOW);
-        label4.setOpaque(true);
+        //label4.setOpaque(true);
         Font fonte4 = new Font("Quantidade:", Font.BOLD, 15);
         label4.setFont(fonte4);
         label4.setText(fonte4.getName());
@@ -215,7 +215,7 @@ public class Popup_Adicionar_Produto {
     }
     
     public static void main(String[] args) {
-        int qtd_predios = 2;
+        //int qtd_predios = 2;
         int qtd_lados = 2;
         int qtd_niveis = 2;
         int predio = 2; 

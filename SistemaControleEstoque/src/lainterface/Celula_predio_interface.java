@@ -30,7 +30,7 @@ public class Celula_predio_interface extends JPanel{
         this.setBounds(0, 0, largura, altura);
         this.largura = largura;
         this.altura = altura;
-        this.setBackground(Color.green);
+        //this.setBackground(Color.green);
         this.qtd_linhas = qtd_niveis; 
         this.qtd_colunas = qtd_lados;
         this.predio = predio;

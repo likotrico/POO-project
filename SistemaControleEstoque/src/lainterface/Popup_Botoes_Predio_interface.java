@@ -63,7 +63,7 @@ public class Popup_Botoes_Predio_interface {
         JLabel infolabel = new JLabel();
         infolabel.setBackground(Color.PINK);
         //infolabel.setOpaque(true);
-        Font infofonte = new Font( ""+this.predio, Font.BOLD, 17);
+        Font infofonte = new Font( ""+(this.predio+1), Font.BOLD, 17);
         infolabel.setFont(infofonte);
         infolabel.setText(infofonte.getName());
         infolabel.setBounds(165, 10, 40, 30);
@@ -83,7 +83,7 @@ public class Popup_Botoes_Predio_interface {
         JLabel infoLabel2 = new JLabel();
         infoLabel2.setBackground(Color.GRAY);
         //infoLabel2.setOpaque(true);
-        Font infofonte2 = new Font(""+this.lado, Font.BOLD, 17);
+        Font infofonte2 = new Font(""+(this.lado+1), Font.BOLD, 17);
         infoLabel2.setFont(infofonte2);
         infoLabel2.setText(infofonte2.getName());
         infoLabel2.setBounds(260, 10, 40, 30);
@@ -103,7 +103,7 @@ public class Popup_Botoes_Predio_interface {
         JLabel infoLabel3 = new JLabel();
         infoLabel3.setBackground(Color.CYAN);
         //infoLabel3.setOpaque(true);
-        Font infofonte3 = new Font(""+this.nivel, Font.BOLD, 17);
+        Font infofonte3 = new Font(""+(this.nivel+1), Font.BOLD, 17);
         infoLabel3.setFont(infofonte3);
         infoLabel3.setText(infofonte3.getName());
         infoLabel3.setBounds(355, 10, 40, 30);

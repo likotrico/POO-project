@@ -3,8 +3,6 @@ package usuarios;
 import java.util.ArrayList;
 
 import estoque.Produto;
-import usuarios.TipoExterno;
-import usuarios.User;
 
 public class Externo extends User{
     private ArrayList<Produto> produtos;

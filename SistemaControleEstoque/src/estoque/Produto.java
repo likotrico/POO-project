@@ -4,7 +4,6 @@ public class Produto {
 
     // -1 para tratar os casos de quando não tivermos informações do produto
     private int codigo = -1;
-    private double valor_venda = -1;
     private int ano_val = -1;
     private int mes_val = -1;
     private int dia_val = -1;
@@ -13,24 +12,7 @@ public class Produto {
         this.codigo = codigo;
     }
 
-    public int pegarCodigoProduto(){
-        return this.codigo;
-    }
-
-    public int pegarDiaValidade(){
-        return this.dia_val;
-    }
-
-
     /*GETTERS AND SETTERS */
-
-    public double getValor_venda() {
-        return valor_venda;
-    }
-
-    public void setValor_venda(double valor_venda) {
-        this.valor_venda = valor_venda;
-    }
 
     public int getCodigo() {
         return codigo;

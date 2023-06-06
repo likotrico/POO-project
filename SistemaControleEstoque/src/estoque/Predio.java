@@ -44,54 +44,7 @@ public class Predio {
         }
     }
 
-    //VERIFICA SE EXISTE PRODUTO NO ESPAÇO INDICADO
-    public boolean existeProduto(int lado, int nivel){
-        if(espaco[lado][nivel].getProduto() == null) return false;
-        else return true;
-    }
-
-    //VERIFICA  SE É O MESMO PRODUTO
-    /*public boolean mesmoProduto(int lado, int nivel, Produto produto){
-        if(espaco[lado][nivel].getProduto().getCodigo() == produto.getCodigo()) return true;
-        else return false;
-    }*/
-
-    /*public boolean mesmoProduto(int lado_part, int nivel_part, int dia_part, int mes_part, int ano_part, int lado_dest, int nivel_dest, int dia_dest, int mes_dest, int ano_dest){
-        if(espaco[lado_part][nivel_part].pegarCodigoProduto() == espaco[lado_dest][nivel_dest].pegarCodigoProduto()){//VERIFICANDO SE TEM O MESMO CÓDIGO
-            if(espaco[lado_part][nivel_part].pegarDiaValidade() == espaco[lado_dest][nivel_dest].pegarDiaValidade()){//VERIFICANDO MESMO DIA
-                if(espaco[lado_part][nivel_part].pegarMesValidade() == espaco[lado_dest][nivel_dest].pegarMesValidade()){//VERIFICANDO O MESMO MES
-                    if(espaco[lado_part][nivel_part].pegarAnoValidade() == espaco[lado_dest][nivel_dest].pegarAnoValidade()){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }*/
-
-    //INCREMENTAR QUANTIDADE ESPAÇO
-    public void incrementarQuantidade(int lado, int nivel, int qtd){
-        espaco[lado][nivel].setQuantidade(espaco[lado][nivel].getQuantidade() + qtd);
-    }
-
     //INSERIR PRODUTO EM UM ESPAÇO
-    public void inserirProdutoPredio(Produto produto, int qtd){
-        while(true){
-            int side = Integer.parseInt(JOptionPane.showInputDialog("Em qual lado deseja inserir?"));
-            if(side > this.quant_lado - 1 || side <= 0){ //VALIDANDO O LADO
-                System.out.println("Lado inexistente");
-            }else{
-                int level = Integer.parseInt(JOptionPane.showInputDialog("Em qual nível deseja inserir?"));
-                if(level > this.quant_nivel - 1 || level <= 0){//VALIDANDO O NÍVEL
-                    System.out.println("Nível inexistente");
-                }else{
-                    espaco[side][level].inserirProdutoEspaco(produto, qtd); 
-                    break;
-                }
-            }
-        }
-    }
-
     public void inserir(Produto produto, int lado, int nivel, int qtd){
         try{
             espaco[lado][nivel].inserirProdutoEspaco(produto, qtd);
@@ -121,12 +74,17 @@ public class Predio {
         return espaco[lado][nivel].getQuantidade();
     }
 
-    //MOVER PRODUTO DE UM ESPACO PARA OUTRO
-    /*public void subtrairPredio(int lado_part, int nivel_part, int qtd, Produto produto){
-        if(produto.getCodigo() == espaco[lado_part][nivel_part].getProduto().getCodigo()) espaco[lado_part][nivel_part].subtrairQuantidade(qtd);
-        else System.out.println("O produto no local não é o mesmo!");
-    }*/
-
+    //VERIFICA SE EXISTE PRODUTO NO ESPAÇO INDICADO
+    public boolean existeProduto(int lado, int nivel){
+        if(espaco[lado][nivel].getProduto() == null) return false;
+        else return true;
+    }
+ 
+    //INCREMENTAR QUANTIDADE ESPAÇO
+    public void incrementarQuantidade(int lado, int nivel, int qtd){
+        espaco[lado][nivel].setQuantidade(espaco[lado][nivel].getQuantidade() + qtd);
+    }
+    //SUBTRAIR QUANTIDADE ESPAÇO
     public void subtrairQuantidade(int lado_part, int nivel_part ,int qtd){
         espaco[lado_part][nivel_part].subtrairQuantidade(qtd);
     }

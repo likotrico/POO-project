@@ -21,7 +21,7 @@ public class Espaco {
 
     public int pegarCodigoProduto(){
         if(produto != null){
-            return produto.pegarCodigoProduto();
+            return produto.getCodigo();
         }else return -1;
         
     }
