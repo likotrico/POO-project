@@ -11,6 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import estoque.Estoque;
+import estoque.Produto;
+import usuarios.Interno;
+
 public class MenuInicial_CarregarEstoque {
     
     private JFrame frame;
@@ -23,7 +27,7 @@ public class MenuInicial_CarregarEstoque {
     private JButton botaoCarregarEstoque;
     private JButton botaoCancelar;
 
-    public MenuInicial_CarregarEstoque(){
+    public MenuInicial_CarregarEstoque(Interno interno){
         //ADICIONANDO O JFRAME
         JFrame frame = new JFrame();
         frame.setLayout(null);
@@ -60,7 +64,7 @@ public class MenuInicial_CarregarEstoque {
         //ADICIONANDO O JBUTTON CARREGAR
         JButton botao1 = new JButton();
         botao1.setFocusable(false);
-        botao1.addActionListener(e -> this.carregarEstoque());
+        botao1.addActionListener(e -> this.carregarEstoque(interno));
         Font fontebotao = new Font("Carregar", Font.BOLD, 15);
         botao1.setFont(fontebotao);
         botao1.setText(fontebotao.getName());
@@ -86,17 +90,18 @@ public class MenuInicial_CarregarEstoque {
         this.frame.setVisible(true);
     }
 
-    public void carregarEstoque(){
+    public void carregarEstoque(Interno interno){
         if(this.inputNome.getText() != ""){
             String nome = this.inputNome.getText();
             String path = "SistemaControleEstoque/src/arquivosEstoque/"+nome;
+            String pathProdutos = "SistemaControleEstoque/src/arquivosEstoque/"+nome+"/"+nome+"ProdutosEstoque"+"/"+nome+"ProdutosEstoque.csv";
 
             File file = new File(path+"/"+nome+".csv");
+            File file2 = new File(pathProdutos);
 
             BufferedReader reader = null;
             String linha = "";
             int qtd_predio, qtd_lado, qtd_nivel;
-
             //PEGANDO AS INFORMAÇÕES DOS PRÉDIOS, LADOS E NÍVEIS
             try{
                 reader = new BufferedReader(new FileReader(file));
@@ -106,20 +111,54 @@ public class MenuInicial_CarregarEstoque {
                     qtd_predio = Integer.parseInt(coluna[0]);
                     qtd_lado = Integer.parseInt(coluna[1]);
                     qtd_nivel = Integer.parseInt(coluna[2]);
-                    //System.out.println(qtd_predio);
-                    //System.out.println(qtd_lado);
-                    //System.out.println(qtd_nivel);
+                    Estoque estoque = new Estoque();
+                    System.out.println("OK");
+                    estoque.iniciarEstoque(estoque, qtd_predio, qtd_lado, qtd_nivel);
+                    BufferedReader reader2 = null;
+                    String linha2 = "";
+                    try{
+                        reader2 = new BufferedReader(new FileReader(file2));
+                        linha2 = reader2.readLine();//PARA PULAR A PRIMEIRA LINHA
+                        System.out.println(linha2);
+                        while((linha2 = reader2.readLine()) != null){
+                            String[] coluna2 = linha2.split(";");
+                            //bw2.write("predio;lado;nivel;codigo;dia;mes;ano;quantidade\n");
+                            int predio = Integer.parseInt(coluna2[0]);
+                            int lado = Integer.parseInt(coluna2[1]);
+                            int nivel = Integer.parseInt(coluna2[2]);
+                            int codigo = Integer.parseInt(coluna2[3]);
+                            int dia = Integer.parseInt(coluna2[4]);
+                            int mes = Integer.parseInt(coluna2[5]);
+                            int ano = Integer.parseInt(coluna2[6]);
+                            int quantidade = Integer.parseInt(coluna2[7]);
+
+                            Produto produto = new Produto(codigo);
+                            produto.setDia_val(dia);
+                            produto.setMes_val(mes);
+                            produto.setAno_val(ano);
+
+                            estoque.inserir(produto, predio, lado, nivel, quantidade);
+                            
+                        }
+                        reader2.close();
+                        this.frame.dispose();
+                        JframePrincipal frameprincipal = new JframePrincipal();
+                        frameprincipal.iniciarFrame(nome, interno, frameprincipal, estoque, qtd_lado, qtd_nivel, qtd_predio);
+                        frameprincipal.atualizarOsBotoes(estoque);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
                 }
                 reader.close();
             }catch(Exception e){
                 e.printStackTrace();
             }
-            
+
         }
     }
 
     public static void main(String[] args) {
-        new MenuInicial_CarregarEstoque();
+       // new MenuInicial_CarregarEstoque();
     }
 
 }
