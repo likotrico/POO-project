@@ -183,7 +183,7 @@ public class Popup_Botoes_Predio_interface {
 
         //ADICIONANDO O BOTÃO MOVER
         JButton botao2 = new JButton();
-        botao2.addActionListener(e -> new Popup_Mover_Produto(frameprincipal, this, estoque, predio, lado, nivel));
+        botao2.addActionListener(e -> new Popup_Mover_Produto(nomeEstoque, frameprincipal, this, estoque, predio, lado, nivel));
         botao2.setFocusable(false);
         botao2.setText("Mover");
         botao2.setBounds(105, 190, 100, 25);
@@ -194,7 +194,7 @@ public class Popup_Botoes_Predio_interface {
 
         //ADICIONANDO O BOTÃO REMOVER
         JButton botao3 = new JButton();
-        botao3.addActionListener(e -> new Popup_Remover_Produto(frameprincipal, this, estoque, predio, lado, nivel));
+        botao3.addActionListener(e -> new Popup_Remover_Produto(nomeEstoque,frameprincipal, this, estoque, predio, lado, nivel));
         botao3.setFocusable(false);
         botao3.setText("Remover");
         botao3.setBounds(105, 220, 100, 25);
@@ -239,188 +239,44 @@ public class Popup_Botoes_Predio_interface {
 
     //ATUALIZANDO AS INFORMAÇÕES QUE ESTARÃO PRESENTES NO POPUP
     public void atualizarInformacoes(Estoque estoque, int predio, int lado, int nivel){
-        //PEGANDO O CÓDIGO
-        int codigoproduto = estoque.pegarCodigoProduto(predio, lado, nivel);
-        if(codigoproduto == -1){
-            this.informacaoProdutoCodigo.setText("");    
-        }else{
-            this.informacaoProdutoCodigo.setText("\t"+codigoproduto);
-        }
-
-        String data = "";
-        int diaValidade = estoque.pegarDiaValidade(predio, lado, nivel);
-        int mesValidade = estoque.pegarMesValidade(predio, lado, nivel);
-        int anoValidade = estoque.pegarAnoValidade(predio, lado, nivel);
-        if(diaValidade > 0 && mesValidade > 0 && anoValidade > 0){
-            data = "\t"+diaValidade+" / "+mesValidade+" / "+anoValidade;
-        }else if(diaValidade <= 0 && mesValidade > 0 && anoValidade > 0){
-            data = "\t"+mesValidade+" /" +anoValidade;
-        }else if(diaValidade <= 0 && mesValidade <= 0 && anoValidade > 0){
-            data = "\t"+anoValidade;
-        }
-
-        System.out.println(data);
-        this.informacaoValidade.setText(data);
-
         int quantidade = estoque.pegarQuantidade(predio, lado, nivel);
+        //VERIFICANDO SE HÁ UM PRODUTO COM QUANTIDADE VÁLIDA
         if(quantidade > 0){
             this.informacaoQuantidade.setText("\t"+quantidade);
-        }else this.informacaoQuantidade.setText("");
+            int codigoproduto = estoque.pegarCodigoProduto(predio, lado, nivel);
+            //VERIFICANDO SE HÁ UM PRODUTO COM CÓDIGO VÁLIDO
+            if(codigoproduto == -1){
+                this.informacaoProdutoCodigo.setText("");    
+            }else{
+                //SETANDO A VALIDADE DO PRODUTO PRESENTE 
+                this.informacaoProdutoCodigo.setText("\t"+codigoproduto);
+                String data = "";
+                int diaValidade = estoque.pegarDiaValidade(predio, lado, nivel);
+                int mesValidade = estoque.pegarMesValidade(predio, lado, nivel);
+                int anoValidade = estoque.pegarAnoValidade(predio, lado, nivel);
+                if(diaValidade > 0 && mesValidade > 0 && anoValidade > 0){
+                    data = "\t"+diaValidade+" / "+mesValidade+" / "+anoValidade;
+                }else if(diaValidade <= 0 && mesValidade > 0 && anoValidade > 0){
+                    data = "\t"+mesValidade+" /" +anoValidade;
+                }else if(diaValidade <= 0 && mesValidade <= 0 && anoValidade > 0){
+                    data = "\t"+anoValidade;
+                }
+                System.out.println(data);
+                this.informacaoValidade.setText(data);
+            }
+        }else{
+            //CASO A QUANTIDADE SEJA ZERO
+            this.informacaoQuantidade.setText("");
+            this.informacaoProdutoCodigo.setText("");
+            this.informacaoValidade.setText("");
+            estoque.removerTudo(predio, lado, nivel);
+        } 
 
     }
 
-
-    /*GETTERS AND SETTERS */
-    public JFrame getFrame() {
-        return frame;
-    }
-    public void setFrame(JFrame frame) {
-        this.frame = frame;
-    }
-    public JLabel getTextoPredio() {
-        return textoPredio;
-    }
-    public void setTextoPredio(JLabel textoPredio) {
-        this.textoPredio = textoPredio;
-    }
-    public JLabel getTextoLado() {
-        return textoLado;
-    }
-    public void setTextoLado(JLabel textoLado) {
-        this.textoLado = textoLado;
-    }
-    public JLabel getTextoNivel() {
-        return textoNivel;
-    }
-    public void setTextoNivel(JLabel textoNivel) {
-        this.textoNivel = textoNivel;
-    }
-    public JLabel getTextoProdutoCodigo() {
-        return textoProdutoCodigo;
-    }
-    public void setTextoProdutoCodigo(JLabel textoProdutoCodigo) {
-        this.textoProdutoCodigo = textoProdutoCodigo;
-    }
-    public JLabel getTextoQuantidade() {
-        return textoQuantidade;
-    }
-    public void setTextoQuantidade(JLabel textoQuantidade) {
-        this.textoQuantidade = textoQuantidade;
-    }
-    public JLabel getTextoValidade() {
-        return textoValidade;
-    }
-    public void setTextoValidade(JLabel textoValidade) {
-        this.textoValidade = textoValidade;
-    }
-    public JButton getBotaoAdicionar() {
-        return botaoAdicionar;
-    }
-    public void setBotaoAdicionar(JButton botaoAdicionar) {
-        this.botaoAdicionar = botaoAdicionar;
-    }
-    public JButton getBotaoRemover() {
-        return botaoRemover;
-    }
-    public void setBotaoRemover(JButton botaoRemover) {
-        this.botaoRemover = botaoRemover;
-    }
-    public JButton getBotaoMover() {
-        return botaoMover;
-    }
-    public void setBotaoMover(JButton botaoMover) {
-        this.botaoMover = botaoMover;
-    }
-    public JButton getBotaoCancelar() {
-        return botaoCancelar;
-    }
-    public void setBotaoCancelar(JButton botaoCancelar) {
-        this.botaoCancelar = botaoCancelar;
+    public void fecharJanela(){
+        this.frame.dispose();
     }
 
-    public JLabel getInformacaoPredio() {
-        return informacaoPredio;
-    }
 
-    public void setInformacaoPredio(JLabel informacaoPredio) {
-        this.informacaoPredio = informacaoPredio;
-    }
-
-    public JLabel getInformacaoLado() {
-        return informacaoLado;
-    }
-
-    public void setInformacaoLado(JLabel informacaoLado) {
-        this.informacaoLado = informacaoLado;
-    }
-
-    public JLabel getInformacaoNivel() {
-        return informacaoNivel;
-    }
-
-    public void setInformacaoNivel(JLabel informacaoNivel) {
-        this.informacaoNivel = informacaoNivel;
-    }
-
-    public JLabel getInformacaoProdutoCodigo() {
-        return informacaoProdutoCodigo;
-    }
-
-    public void setInformacaoProdutoCodigo(JLabel informacaoProdutoCodigo) {
-        this.informacaoProdutoCodigo = informacaoProdutoCodigo;
-    }
-
-    public JLabel getInformacaoQuantidade() {
-        return informacaoQuantidade;
-    }
-
-    public void setInformacaoQuantidade(JLabel informacaoQuantidade) {
-        this.informacaoQuantidade = informacaoQuantidade;
-    }
-
-    public JLabel getInformacaoValidade() {
-        return informacaoValidade;
-    }
-
-    public void setInformacaoValidade(JLabel informacaoValidade) {
-        this.informacaoValidade = informacaoValidade;
-    }
-
-    public int getPredio() {
-        return predio;
-    }
-
-    public void setPredio(int predio) {
-        this.predio = predio;
-    }
-
-    public int getLado() {
-        return lado;
-    }
-
-    public void setLado(int lado) {
-        this.lado = lado;
-    }
-
-    public int getNivel() {
-        return nivel;
-    }
-
-    public void setNivel(int nivel) {
-        this.nivel = nivel;
-    }
-
-    public static void main(String[] args) {
-        int qtd_predios = 2;
-        int qtd_lados = 2;
-        int qtd_niveis = 2;
-        int predio = 2; 
-        Estoque estoque = new Estoque();
-        estoque.iniciarEstoque(estoque, predio, qtd_lados, qtd_niveis);
-
-        //Popup_Botoes_Predio_interface pop = new Popup_Botoes_Predio_interface(new JframePrincipal(qtd_lados, qtd_niveis, qtd_predios), estoque, 1, 1, 1);
-        while(true){
-            estoque.imprimirEstoque(estoque);
-        }
-    }
 }

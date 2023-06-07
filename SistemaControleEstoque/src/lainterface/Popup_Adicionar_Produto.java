@@ -33,8 +33,8 @@ public class Popup_Adicionar_Produto {
     private JTextField inputAnoValidade; //OK
     private JTextField inputQuantidadeProduto; //OK
 
-    private JButton botaoAdicionar;
-    private JButton botaoCancelar;
+    private JButton botaoAdicionar; //OK
+    private JButton botaoCancelar; //OK
 
     public Popup_Adicionar_Produto(String nomeEstoque, JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup ,Estoque estoque, int predio, int lado, int nivel){
 
@@ -194,8 +194,6 @@ public class Popup_Adicionar_Produto {
         produto.setAno_val(Integer.parseInt(this.inputAnoValidade.getText()));
         
         estoque.inserir(produto, predio, lado, nivel, Integer.parseInt(this.inputQuantidadeProduto.getText()));
-        /*remover linha abaixo e colocar como parametro */
-        //String nomeEstoque = "teste123";
         
         String path = "SistemaControleEstoque/src/arquivosEstoque/"+nomeEstoque+"/"+nomeEstoque+"ProdutosEstoque"+"/"+nomeEstoque+"ProdutosEstoque.csv";
         File file = new File(path);

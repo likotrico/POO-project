@@ -1,6 +1,14 @@
 package lainterface;
 import java.awt.Color;
 import java.awt.Font;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,7 +31,7 @@ public class Popup_Remover_Produto {
     public JButton botaoRemoverTudo; //OK
     public JButton botaoCancelar; //OK
 
-    public Popup_Remover_Produto(JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup, Estoque estoque, int predio, int lado, int nivel){
+    public Popup_Remover_Produto(String nomeEstoque, JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup, Estoque estoque, int predio, int lado, int nivel){
 
         //ADICIONANDO JFRAME  
         JFrame frame = new JFrame();
@@ -60,7 +68,7 @@ public class Popup_Remover_Produto {
 
         //ADICIONANDO O BOTÃO REMOVER
         JButton botao1 = new JButton();
-        botao1.addActionListener(e -> remover(frameprincipal, popup, estoque, predio, lado, nivel));
+        botao1.addActionListener(e -> remover(nomeEstoque, frameprincipal, popup, estoque, predio, lado, nivel));
         botao1.setFocusable(false);
         Font fontebotao1 = new Font("Remover", Font.BOLD, 13);
         botao1.setFont(fontebotao1);
@@ -103,19 +111,71 @@ public class Popup_Remover_Produto {
         this.frame.setVisible(true);
     }
 
-    public void remover(JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup, Estoque estoque, int predio, int lado, int nivel){
+    public void remover(String nomeEstoque, JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup, Estoque estoque, int predio, int lado, int nivel){
         
         if(this.inputQuantidadeRemover.getText().matches("[1-9]*")){
             int qtd = Integer.parseInt(this.inputQuantidadeRemover.getText());
+            int codigo = estoque.pegarCodigoProduto(predio, lado, nivel);
+            int dia = estoque.pegarDiaValidade(predio, lado, nivel);
+            int mes = estoque.pegarMesValidade(predio, lado, nivel);
+            int ano = estoque.pegarAnoValidade(predio, lado, nivel);
+            int quantidadearquivo = estoque.pegarQuantidade(predio, lado, nivel);
+            int novaquantidade = estoque.pegarQuantidade(predio, lado, nivel) - qtd;
             estoque.remover(predio, lado, nivel, qtd);
+
+            //REMOVENDO NO ARQUIVO
+            //String nomeEstoque = "aiai";
+            String pathProdutos = "SistemaControleEstoque/src/arquivosEstoque/"+nomeEstoque+"/"+nomeEstoque+"ProdutosEstoque"+"/"+nomeEstoque+"ProdutosEstoque.csv";
+            
+            File file = new File(pathProdutos);
+            BufferedReader reader = null;
+            String linha = "";
+
+            ArrayList<String> array = new ArrayList<>();
+
+            //PEGANDO UM ARQUIVO IGUAL
+            try {
+                reader = new BufferedReader(new FileReader(file));
+                linha = reader.readLine();//PARA PULAR A PRIMEIRA LINHA
+                while((linha = reader.readLine()) != null){
+                    System.out.println("ENTROU LOOP");
+                    String[] coluna = linha.split(";");
+                    if(linha != ""){
+                        if((Integer.parseInt(coluna[0]) == predio )&& Integer.parseInt(coluna[1])==lado && Integer.parseInt(coluna[2])==nivel && Integer.parseInt(coluna[3])==codigo && Integer.parseInt(coluna[4])==dia && Integer.parseInt(coluna[5])==mes &&Integer.parseInt(coluna[6])==ano && Integer.parseInt(coluna[7])==quantidadearquivo){
+                            if(novaquantidade > 0){
+                                String a =(""+coluna[0]+";"+coluna[1]+";"+coluna[2]+";"+coluna[3]+";"+coluna[4]+";"+coluna[5]+";"+coluna[6]+";"+novaquantidade+"");
+                                array.add(a);
+                            }
+                        }else{
+                            array.add(linha);
+                        }
+                    }
+                }
+                reader.close();
+
+                BufferedWriter bw;
+                bw = new BufferedWriter(new FileWriter(file, true));
+                bw.close(); 
+                
+                BufferedWriter bw2 = new BufferedWriter(new FileWriter(file));
+                bw2.write("predio;lado;nivel;codigo;dia;mes;ano;quantidade");
+                for (String elemento : array) {
+                    bw2.write("\n"+elemento);
+                }
+                bw2.newLine();
+                bw2.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            this.frame.dispose();
+            frameprincipal.atualizarOsBotoes(estoque);
+            popup.atualizarInformacoes(estoque, predio, lado, nivel);
             
         }else{
             System.out.println("Digite um valor válido!");
         }
-
-        this.frame.dispose();
-        frameprincipal.atualizarOsBotoes(estoque);
-        popup.atualizarInformacoes(estoque, predio, lado, nivel);
+        
     }
 
     public void removerTudo(JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup, Estoque estoque, int predio, int lado, int nivel){

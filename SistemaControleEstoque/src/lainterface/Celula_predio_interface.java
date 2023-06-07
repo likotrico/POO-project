@@ -3,13 +3,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import estoque.Estoque;
 import usuarios.Interno;
-import usuarios.TipoInterno;
 
 public class Celula_predio_interface extends JPanel{
 
@@ -102,40 +100,6 @@ public class Celula_predio_interface extends JPanel{
         this.setBounds(x, y, largura, altura);
     }
 
-
-
-
-
-
-    public static void main(String[] args) {
-        int qtd_predios = 2;
-        int qtd_lados = 2;
-        int qtd_niveis = 2;
-        int predio = 2; 
-        Estoque estoque = new Estoque();
-        estoque.iniciarEstoque(estoque, predio, qtd_lados, qtd_niveis);
-
-        int largura = 400;
-        int altura = 400;
-        JFrame frame = new JFrame();
-        frame.setLayout(null);
-        frame.setSize(largura+100, altura+100);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        Interno interno = new Interno();
-        interno.setNome("likotrico");
-        interno.setTipoInterno(TipoInterno.ADM);
-        
-        //Celula_predio_interface teste = new Celula_predio_interface(interno, new JframePrincipal(), estoque, qtd_lados, qtd_niveis, predio, largura, altura);
-
-        //frame.add(teste);
-        frame.setVisible(true);
-        while(true){
-            estoque.imprimirEstoque(estoque);
-        }
-    }
-    
     /*GETS ANDS SETS */
 
     public JLabel getLabel_principal() {
@@ -198,7 +162,7 @@ public class Celula_predio_interface extends JPanel{
         int i, j;
         for(i=0; i<qtd_colunas; i++){
             for(j=0; j<qtd_linhas; j++){
-                if((estoque.pegarCodigoProduto(this.predio-1, i, j) != -1 )&&(estoque.existeProduto(this.predio-1, i, j))){
+                if((estoque.pegarCodigoProduto(this.predio-1, i, j) != -1 )&&(estoque.existeProduto(this.predio-1, i, j))&&(estoque.pegarQuantidade(this.predio-1, i, j) > 0)){
                     lista_boteos[j][i].setText(""+estoque.pegarCodigoProduto(this.predio - 1, i, j));
                 }else{
                     lista_boteos[j][i].setText("");
