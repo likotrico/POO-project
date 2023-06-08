@@ -6,7 +6,25 @@ import estoque.Produto;
 
 public class Externo extends User{
     private ArrayList<Produto> produtos;
-    private ArrayList<String> informacoes;
+    private String telefone;
+    private String codProduto;
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getCodProduto() {
+        return codProduto;
+    }
+
+    public void setCodProduto(String codProduto) {
+        this.codProduto = codProduto;
+    }
+
     private TipoExterno tipoExterno;
 
     public TipoExterno getTipoExterno() {
@@ -15,14 +33,6 @@ public class Externo extends User{
 
     public void setTipoExterno(TipoExterno tipoExterno) {
         this.tipoExterno = tipoExterno;
-    }
-
-    public ArrayList<String> getInformacoes() {
-        return informacoes;
-    }
-
-    public void setInformacoes(ArrayList<String> informacoes) {
-        this.informacoes = informacoes;
     }
 
     public ArrayList<Produto> getProdutos_adquiridosOUvendidos() {

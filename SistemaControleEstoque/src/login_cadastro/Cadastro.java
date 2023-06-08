@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import javax.swing.JOptionPane;
 
 import usuarios.*;
@@ -47,10 +48,17 @@ public class Cadastro extends javax.swing.JFrame {
         txtNome = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtChave = new javax.swing.JPasswordField();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Email:");
+
+        txtEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEmailActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Senha:");
 
@@ -94,6 +102,8 @@ public class Cadastro extends javax.swing.JFrame {
 
         jLabel6.setText("Chave de Acesso(Apenas Administradores):");
 
+        jLabel7.setText("@superestoques.com");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -111,9 +121,12 @@ public class Cadastro extends javax.swing.JFrame {
                     .addComponent(btnCadastrar)
                     .addComponent(txtSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                     .addComponent(txtNome)
-                    .addComponent(txtEmail)
-                    .addComponent(txtChave))
-                .addContainerGap(100, Short.MAX_VALUE))
+                    .addComponent(txtChave)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtEmail)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,7 +134,9 @@ public class Cadastro extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
@@ -134,15 +149,18 @@ public class Cadastro extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addGap(18, 18, 18)
                 .addComponent(txtChave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(cmbUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
+
+        this.setResizable(false);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -158,7 +176,7 @@ public class Cadastro extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Campo(s) não preenchidos", null, JOptionPane.ERROR_MESSAGE);   
         }
         else {
-            if (txtEmail.getText().contains("@") && txtEmail.getText().contains(".com")) {
+            if (emailValido()) {
                 if (cmbUsuario.getSelectedItem().equals("Vendedor")) {
                     if (emailVendedorExistente()) {
                         cadastrarVendedor();
@@ -191,6 +209,10 @@ public class Cadastro extends javax.swing.JFrame {
 
     private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
     }//GEN-LAST:event_txtNomeActionPerformed
+
+    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEmailActionPerformed
 
     /**
      * @param args the command line arguments
@@ -237,6 +259,7 @@ public class Cadastro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPasswordField txtChave;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNome;
@@ -245,7 +268,7 @@ public class Cadastro extends javax.swing.JFrame {
 
     private void cadastrarVendedor() {
         Interno vendedor = new Interno();
-        vendedor.setEmail(txtEmail.getText());
+        vendedor.setEmail(txtEmail.getText()+"@superestoques.com");
         vendedor.setNome(txtNome.getText());
         String senha = new String(txtSenha.getPassword());
         vendedor.setSenha(senha);
@@ -274,7 +297,7 @@ public class Cadastro extends javax.swing.JFrame {
 
     private void cadastrarAdm() {
         Interno administrador = new Interno();
-        administrador.setEmail(txtEmail.getText());
+        administrador.setEmail(txtEmail.getText()+"@superestoques.com");
         administrador.setNome(txtNome.getText());
         String senha = new String(txtSenha.getPassword());       
         administrador.setSenha(senha);
@@ -314,7 +337,7 @@ public class Cadastro extends javax.swing.JFrame {
                 while ((line = reader.readLine()) != null) {
                     String[] row = line.split(";");
                     for (String string : row) {
-                        if (string.equals(txtEmail.getText())) {
+                        if (string.equals((txtEmail.getText()+"@superestoques.com"))) {
                             JOptionPane.showMessageDialog(null, "Este email já está em uso. Tente outro.", null, JOptionPane.ERROR_MESSAGE);
                             result = false;
                             break loop;
@@ -341,7 +364,7 @@ public class Cadastro extends javax.swing.JFrame {
                 while ((line = reader.readLine()) != null) {
                     String[] row = line.split(";");
                     for (String string : row) {
-                        if (string.equals(txtEmail.getText())) {
+                        if (string.equals(txtEmail.getText()+"@superestoques.com")) {
                             JOptionPane.showMessageDialog(null, "Este email já está em uso. Tente outro.", null, JOptionPane.ERROR_MESSAGE);
                             result = false;
                             break loop;
@@ -351,6 +374,23 @@ public class Cadastro extends javax.swing.JFrame {
             }
         } catch (HeadlessException | IOException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+        }
+        return result;
+    }
+    boolean emailValido() {
+        char[] letras = txtEmail.getText().toCharArray();
+        boolean result = true;
+        for (char c : letras) {
+            if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+                result = true;
+            }
+            else if ((c >= '0' && c <= '9')) {
+                result = true;
+            }
+            else {
+                result = false;
+                break;
+            }
         }
         return result;
     }
