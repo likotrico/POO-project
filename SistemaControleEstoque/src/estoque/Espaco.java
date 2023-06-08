@@ -70,6 +70,25 @@ public class Espaco {
         else this.setQuantidade((this.getQuantidade() - sub));
     }
 
+    public int verificarValidade(int dia, int mes, int ano){
+        System.out.println("ENTROU ESPAÇO");
+        if(produto != null){
+            System.out.println("O PRODUTO NÃO É NULO");
+            if(produto.getCodigo() > 0){
+                System.out.println("PRODUTO MAIOR Q 0");
+                if(ano <= produto.getAno_val()){
+                    System.out.println("ANO PASSOU");
+                    if(mes <= produto.getMes_val()){
+                        if(dia <= produto.getDia_val()){
+                            return 1;
+                        }else return 0;
+                    }else return 0;
+                }else return 0;  
+            }return -2;
+        }
+        return -1;
+    }
+
     //GETTERS AND SETTERS
     public int getLado() {
         return this.lado;

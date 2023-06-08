@@ -123,6 +123,11 @@ public class Predio {
         }
     }
 
+    public int verificarValidade(int lado, int nivel, int dia, int mes, int ano){
+        System.out.println("ENTROU NO PRÉDIO");
+        return espaco[lado][nivel].verificarValidade(dia, mes, ano);
+    }
+
     //GETTERS AND SETTERS
     public int getLado() {
         return this.quant_lado;

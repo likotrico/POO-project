@@ -160,7 +160,7 @@ public class Popup_Mover_Produto {
         int lado_part = lado;
         int nivel_part = nivel;
 
-        if(this.inputPredioDestino.getText().matches("[1-9]*") && this.inputLadoDestino.getText().matches("[1-9]*") && this.inputNivelDestino.getText().matches("[1-9]*") && this.inputQuantidade.getText().matches("[1-9]*")){
+        if(this.inputPredioDestino.getText().matches("\\d+") && this.inputLadoDestino.getText().matches("\\d+") && this.inputNivelDestino.getText().matches("\\d+") && this.inputQuantidade.getText().matches("\\d+")){
             System.out.println("ENTROU");
             int predio_dest = Integer.parseInt(this.inputPredioDestino.getText());
             int lado_dest = Integer.parseInt(this.inputLadoDestino.getText());

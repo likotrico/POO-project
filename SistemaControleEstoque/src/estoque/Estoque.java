@@ -107,6 +107,27 @@ public class Estoque {
         }
     }
 
+    public int verificarValidade(int predio, int lado, int nivel, int dia, int mes, int ano){
+        System.out.println("ENTROU NO ESTOQUE");
+        return estoque[predio].verificarValidade(lado, nivel, dia, mes, ano);
+    }
+
+    public int pegarNumeroPredios(){
+        int count = 0;
+        for (Predio predio : estoque) {
+            count++;
+        }
+        return count;
+    }
+
+    public int pegarNumeroLados(){
+        return estoque[0].getLado();
+    }
+
+    public int pegarNumeroNiveis(){
+        return estoque[0].getNivel();
+    }
+
     //FUNÇÃO PARA IMPRIMIR TODOS OS PRODUTOS DENTRO DO ESTOQUE
     public void imprimirEstoque(Estoque est){
         for (int i = 0; i < this.estoque.length; i++){

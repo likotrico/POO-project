@@ -7,7 +7,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -188,28 +187,32 @@ public class Popup_Adicionar_Produto {
     }
 
     public void adicionar(String nomeEstoque, JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup ,Estoque estoque, int predio, int lado, int nivel){
-        Produto produto = new Produto(Integer.parseInt(this.inputCodigoProduto.getText()));
-        produto.setDia_val(Integer.parseInt(this.inputDiaValidade.getText()));
-        produto.setMes_val(Integer.parseInt(this.inputMesValidade.getText()));
-        produto.setAno_val(Integer.parseInt(this.inputAnoValidade.getText()));
-        
-        estoque.inserir(produto, predio, lado, nivel, Integer.parseInt(this.inputQuantidadeProduto.getText()));
-        
-        String path = "SistemaControleEstoque/src/arquivosEstoque/"+nomeEstoque+"/"+nomeEstoque+"ProdutosEstoque"+"/"+nomeEstoque+"ProdutosEstoque.csv";
-        File file = new File(path);
-        BufferedWriter bw;
-        try {
-            bw = new BufferedWriter(new FileWriter(file, true));
-            bw.write(predio+";"+lado+";"+nivel+";"+produto.getCodigo()+";"+produto.getDia_val()+";"+produto.getMes_val()+";"+produto.getAno_val()+";"+this.inputQuantidadeProduto.getText()+"\n");
-            bw.flush();
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        frameprincipal.atualizarOsBotoes(estoque);
-        this.frame.dispose();
-        popup.atualizarInformacoes(estoque, predio, lado, nivel);
+        if(this.inputCodigoProduto.getText().matches("\\d+") && this.inputDiaValidade.getText().matches("\\d+") && this.inputMesValidade.getText().matches("\\d+") && this.inputAnoValidade.getText().matches("\\d+")){
+            Produto produto = new Produto(Integer.parseInt(this.inputCodigoProduto.getText()));
+            produto.setDia_val(Integer.parseInt(this.inputDiaValidade.getText()));
+            produto.setMes_val(Integer.parseInt(this.inputMesValidade.getText()));
+            produto.setAno_val(Integer.parseInt(this.inputAnoValidade.getText()));
+            
+            estoque.inserir(produto, predio, lado, nivel, Integer.parseInt(this.inputQuantidadeProduto.getText()));
+            
+            String path = "SistemaControleEstoque/src/arquivosEstoque/"+nomeEstoque+"/"+nomeEstoque+"ProdutosEstoque"+"/"+nomeEstoque+"ProdutosEstoque.csv";
+            File file = new File(path);
+            BufferedWriter bw;
+            try {
+                bw = new BufferedWriter(new FileWriter(file, true));
+                bw.write(predio+";"+lado+";"+nivel+";"+produto.getCodigo()+";"+produto.getDia_val()+";"+produto.getMes_val()+";"+produto.getAno_val()+";"+this.inputQuantidadeProduto.getText()+"\n");
+                bw.flush();
+                bw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
+            
+            this.frame.dispose();
+            popup.atualizarInformacoes(estoque, predio, lado, nivel);
+            frameprincipal.atualizarOsBotoes(estoque);
+            frameprincipal.verificarValidadeEstoque(estoque);
+        }else System.out.println("NÃO VÁLIDO");
     }
     
     public static void main(String[] args) {

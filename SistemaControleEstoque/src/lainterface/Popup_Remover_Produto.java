@@ -4,12 +4,9 @@ import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -113,7 +110,7 @@ public class Popup_Remover_Produto {
 
     public void remover(String nomeEstoque, JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup, Estoque estoque, int predio, int lado, int nivel){
         
-        if(this.inputQuantidadeRemover.getText().matches("[1-9]*")){
+        if(this.inputQuantidadeRemover.getText().matches("\\d+")){
             int qtd = Integer.parseInt(this.inputQuantidadeRemover.getText());
             int codigo = estoque.pegarCodigoProduto(predio, lado, nivel);
             int dia = estoque.pegarDiaValidade(predio, lado, nivel);
@@ -179,7 +176,53 @@ public class Popup_Remover_Produto {
     }
 
     public void removerTudo(JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup, Estoque estoque, int predio, int lado, int nivel){
+        int codigo = estoque.pegarCodigoProduto(predio, lado, nivel);
+        int dia = estoque.pegarDiaValidade(predio, lado, nivel);
+        int mes = estoque.pegarMesValidade(predio, lado, nivel);
+        int ano = estoque.pegarAnoValidade(predio, lado, nivel);
+        
         estoque.removerTudo(predio, lado, nivel);
+
+        String nomeEstoque = "aiai";
+        String pathProdutos = "SistemaControleEstoque/src/arquivosEstoque/"+nomeEstoque+"/"+nomeEstoque+"ProdutosEstoque"+"/"+nomeEstoque+"ProdutosEstoque.csv";
+        
+        File file = new File(pathProdutos);
+        BufferedReader reader = null;
+        String linha = "";
+
+        ArrayList<String> array = new ArrayList<>();
+
+        //PEGANDO UM ARQUIVO IGUAL
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            linha = reader.readLine();//PARA PULAR A PRIMEIRA LINHA
+            while((linha = reader.readLine()) != null){
+                System.out.println("ENTROU LOOP");
+                String[] coluna = linha.split(";");
+                if(linha != ""){
+                    if((Integer.parseInt(coluna[0]) == predio )&& Integer.parseInt(coluna[1])==lado && Integer.parseInt(coluna[2])==nivel && Integer.parseInt(coluna[3])==codigo && Integer.parseInt(coluna[4])==dia && Integer.parseInt(coluna[5])==mes &&Integer.parseInt(coluna[6])==ano){
+                    
+                    }else{
+                        array.add(linha);
+                    }
+                }
+            }
+            reader.close();
+
+            BufferedWriter bw;
+            bw = new BufferedWriter(new FileWriter(file, true));
+            bw.close(); 
+            
+            BufferedWriter bw2 = new BufferedWriter(new FileWriter(file));
+            bw2.write("predio;lado;nivel;codigo;dia;mes;ano;quantidade");
+            for (String elemento : array) {
+                bw2.write("\n"+elemento);
+            }
+            bw2.newLine();
+            bw2.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         this.frame.dispose();
         frameprincipal.atualizarOsBotoes(estoque);

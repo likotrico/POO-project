@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import estoque.Estoque;
+import estoque.Produto;
 import usuarios.Interno;
 import usuarios.TipoInterno;
 
@@ -15,6 +16,7 @@ public class JframePrincipal {
     
     private JFrame frame;
     private JScrollPane scrollPanePredios;
+    private JScrollPane scrollNotificacoes;
     private JLabel textoNotificacoes;
     private JLabel notificacoes;
     private JLabel saudacao;
@@ -23,6 +25,7 @@ public class JframePrincipal {
     private JButton botaoFornecedores;
     private JButton botaoClientes;
     private JButton botaoFiltros;
+    private Painel_notificacoes painel_notificacoes;
 
     private Painel_predios_interface teste;
 
@@ -57,6 +60,17 @@ public class JframePrincipal {
         label.setBounds(80, 85, 200, 415);
         label.setOpaque(true);
         this.notificacoes = label;
+        
+        //CRIANDO O SCROLL PANE COM AS NOTIFICAÇÕES
+        Painel_notificacoes a = new Painel_notificacoes(201, 415, 200, 30, 0);
+        this.painel_notificacoes = a;
+        JScrollPane scroll2 = new JScrollPane(this.painel_notificacoes);
+        scroll2.setBackground(Color.PINK);
+        scroll2.setOpaque(true);
+        scroll2.setBounds(80, 85, 200, 415);
+        scroll2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        this.scrollNotificacoes = scroll2;
+        
 
         //CRIANDO A JLABEL DE SAUDAÇÃO
         JLabel label1 = new JLabel();
@@ -90,7 +104,7 @@ public class JframePrincipal {
         //CRIANDO O BOTÃO DE CADASTRAR NOVOS USUÁRIOS
         JButton botao1 = new JButton();
         botao1.setFocusable(false);
-        botao1.setText("Novo Usuário");
+        botao1.setText("N.F.E.");
         botao1.setBounds(160, 10, 120, 30);
         this.botaoCadastrarUsuarios = botao1;
         //VERIFICANDO SE O USUÁRIO TEM PERMISSÃO PARA ACESSAR O CONTEÚDO DESSE BOTÃO
@@ -120,6 +134,7 @@ public class JframePrincipal {
         
         //ADICIONANDO SCROLLPANE        
         this.frame.add(this.scrollPanePredios);
+        this.frame.add(this.scrollNotificacoes);
         //ADICIONANDO LABELS
         this.frame.add(this.notificacoes);
         this.frame.add(this.saudacao);
@@ -131,14 +146,45 @@ public class JframePrincipal {
         this.frame.add(this.botaoClientes);
         this.frame.add(this.botaoFiltros);
         
+        this.verificarValidadeEstoque(estoque);
         frame.setVisible(true);
+        
         }catch(Exception e){
-            System.out.println("Problema ao carregar a tela principal!");
+            e.getStackTrace();
+            System.out.println("Problema ao carregar a tela principal!"+e.getMessage());
         }
     }
 
     public void atualizarOsBotoes(Estoque estoque){
         this.teste.atualizarTextoBotoes(estoque);
+    }
+
+    public void verificarValidadeEstoque(Estoque estoque){
+       int qtd_predios = estoque.pegarNumeroPredios();
+       //System.out.println("Prédios: "+qtd_predios);
+       int qtd_lados = estoque.pegarNumeroLados();
+       //System.out.println("Lados: "+qtd_lados);
+       int qtd_niveis = estoque.pegarNumeroNiveis();
+       //System.out.println("Níveis: "+qtd_niveis);
+       qtd_predios -= 1;
+       qtd_lados -= 1;
+       qtd_niveis -= 1; 
+       int dia = 30;
+       int mes = 5;
+       int ano = 2022;
+       for(int i = 0; i <= qtd_predios; i++){
+        for(int j = 0; j <= qtd_lados; j++){
+            for(int k = 0; k <= qtd_niveis; k++){
+                int a  = estoque.verificarValidade(i, j, k, dia, mes, ano);
+                if(a == 0){
+                    this.painel_notificacoes.adicionarNotificacao(""+i+j+k);
+                    this.scrollNotificacoes.setVisible(false);
+                    this.scrollNotificacoes.setVisible(true);
+                }
+                System.out.println("Prédio: "+i+" Lado: "+j+" Nível: "+k+" Val: "+a);
+            }
+        }
+       }
     }
 
     /*GETTERS AND SETTERS */
@@ -224,14 +270,20 @@ public class JframePrincipal {
     /*MAIN */
     public static void main(String[] args) {
         int qtd_lados = 2;
-        int qtd_niveis = 6;
-        int qtd_predios = 32;
+        int qtd_niveis = 2;
+        int qtd_predios = 2;
         Estoque estoque = new Estoque();
         estoque.iniciarEstoque(estoque, qtd_predios, qtd_lados, qtd_niveis);
+        /*tirar linha abaixo */
+        Produto p = new Produto(1014);
+        p.setDia_val(31);
+        p.setMes_val(5);
+        p.setAno_val(2023);
+        estoque.inserir(p, 0, 0, 0, 10);
         JframePrincipal framePrincipal = new JframePrincipal();
         Interno interno = new Interno();
         interno.setNome("likotrico");
-        interno.setTipoInterno(TipoInterno.VENDEDOR);
+        interno.setTipoInterno(TipoInterno.ADM);
         String nomeEstoque = "a";
         
         framePrincipal.iniciarFrame(nomeEstoque, interno, framePrincipal, estoque, qtd_lados, qtd_niveis, qtd_predios);
