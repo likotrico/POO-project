@@ -86,7 +86,7 @@ public class Espaco {
                 else if(ano == produto.getAno_val()){
                     if(mes < produto.getMes_val())return 1;
                     else if(mes == produto.getMes_val()){
-                        if(dia > produto.getMes_val()){
+                        if(dia > produto.getDia_val()){
                             //System.out.println("ENTROU NO DIA >=");
                             return 0;
                         }

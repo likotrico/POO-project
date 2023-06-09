@@ -26,10 +26,10 @@ public class Estoque {
         //System.out.println("LADO:"+lado);
         //System.out.println("NÍVEL:"+nivel);
         if(pred >= estoque.length){ //VERIFICANDO SE O PRÉDIO DIGITADO FOI VÁLIDO
-            System.out.println("Prédio inexistente");
+            //System.out.println("Prédio inexistente");
         }else{
             estoque[pred].inserir(produto, lado, nivel, qtd);
-            System.out.println("INSERIU ESTOQUE");
+            //System.out.println("INSERIU ESTOQUE");
         }
         
     }
@@ -108,7 +108,7 @@ public class Estoque {
     }
 
     public int verificarValidade(int predio, int lado, int nivel, int dia, int mes, int ano){
-        System.out.println("ENTROU NO ESTOQUE");
+        //System.out.println("ENTROU NO ESTOQUE");
         return estoque[predio].verificarValidade(lado, nivel, dia, mes, ano);
     }
 
