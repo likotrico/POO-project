@@ -1,6 +1,6 @@
 package estoque;
 
-public class Estoque {
+public class Estoque{
 
     private Predio[] estoque;
 
@@ -84,10 +84,6 @@ public class Estoque {
         estoque[predio_dest].incrementarQuantidade(lado_dest, nivel_dest, qtd);
     }
 
-    public void mover(int pred_part, int lado_part, int nivel_part, int qtd, int pred_dest, int lado_dest, int nivel_dest, Produto produto){
-
-    }
-
     //REMOVER UM PRODUTO NO ESTOQUE
     public void remover(int predio, int lado, int nivel, int qtd){
         try{
@@ -126,15 +122,6 @@ public class Estoque {
 
     public int pegarNumeroNiveis(){
         return estoque[0].getNivel();
-    }
-
-    //FUNÇÃO PARA IMPRIMIR TODOS OS PRODUTOS DENTRO DO ESTOQUE
-    public void imprimirEstoque(Estoque est){
-        for (int i = 0; i < this.estoque.length; i++){
-            if(est.estoque[i] != null){
-                est.estoque[i].imprimirPredio(est.estoque[i]);
-            }
-        }
     }
 
     // GETTERS AND SETTERS

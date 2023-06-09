@@ -40,7 +40,7 @@ public class MenuInicial_CarregarEstoque {
         //ADICIONANDO O JLABEL TEXTO CARREGAR ESTOQUE 
         JLabel label1 = new JLabel();
         label1.setBackground(Color.RED);
-        label1.setOpaque(true);
+        //label1.setOpaque(true);
         Font fonte1 = new Font("Carregar Estoque", Font.BOLD, 20);
         label1.setFont(fonte1);
         label1.setText(fonte1.getName());
@@ -50,7 +50,7 @@ public class MenuInicial_CarregarEstoque {
         //ADICIONANDO O JLABEL TEXTO NOME 
         JLabel label2 = new JLabel();
         label2.setBackground(Color.BLUE);
-        label2.setOpaque(true);
+        //label2.setOpaque(true);
         Font fonte2 = new Font("Nome:", Font.BOLD, 15);
         label2.setFont(fonte2);
         label2.setText(fonte2.getName());

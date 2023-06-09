@@ -225,9 +225,7 @@ public class Popup_Adicionar_Produto {
         estoque.iniciarEstoque(estoque, predio, qtd_lados, qtd_niveis);
 
         //Popup_Adicionar_Produto pop = new Popup_Adicionar_Produto(new JframePrincipal(qtd_lados, qtd_niveis, qtd_predios), estoque, predio, qtd_lados, qtd_niveis);
-        while(true){
-            estoque.imprimirEstoque(estoque);
-        }
+
     }
     
 }

@@ -42,7 +42,7 @@ public class Popup_Remover_Produto {
         //ADICIONANDO A JLABEL TEXTO REMOVER PRODUTO
         JLabel label1 = new JLabel();
         label1.setBackground(Color.BLUE);
-        label1.setOpaque(true);
+        //label1.setOpaque(true);
         Font fonte1 = new Font("Remover Produto", Font.BOLD, 20);
         label1.setFont(fonte1);
         label1.setText(fonte1.getName());
@@ -52,7 +52,7 @@ public class Popup_Remover_Produto {
         //ADICIONANDO A JLABEL TEXTO QUANTIDADE
         JLabel label2 = new JLabel();
         label2.setBackground(Color.RED);
-        label2.setOpaque(true);
+        //label2.setOpaque(true);
         Font fonte2 = new Font("Quantidade:", Font.BOLD, 15);
         label2.setFont(fonte2);
         label2.setText(fonte2.getName());
@@ -250,7 +250,6 @@ public class Popup_Remover_Produto {
         estoque.inserir(produto, qtd_predio - 1, qtd_lados - 1, qtd_niveis - 1, qtd_predio+8);
         estoque.inserir(produto, qtd_predio - 2, qtd_lados - 2, qtd_niveis - 2, qtd_predio);
 
-        estoque.imprimirEstoque(estoque);
 
         //Popup_Remover_Produto p = new Popup_Remover_Produto(estoque, qtd_predio, qtd_lados, qtd_niveis);
     }

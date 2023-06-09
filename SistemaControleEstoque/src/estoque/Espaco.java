@@ -13,10 +13,10 @@ public class Espaco {
     }
 
     //INSERINDO UM PRODUTO EM UM ESPAÇO
-    public void inserirProdutoEspaco(Produto produto, int quantidade){
+    public void inserir(Produto produto, int quantidade){
         setProduto(produto);
         setQuantidade(quantidade);
-        System.out.println("INSERIU ESPAÇO");
+        //System.out.println("INSERIU ESPAÇO");
     }
 
     public int pegarCodigoProduto(){

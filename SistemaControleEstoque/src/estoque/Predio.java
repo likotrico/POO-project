@@ -1,7 +1,5 @@
 package estoque;
 
-import javax.swing.JOptionPane;
-
 public class Predio {
     
     private int quant_lado; //QUANTIDADE DE LADOS QUE UM PRÉDIO DO ESTOQUE VAI POSSUIR
@@ -32,22 +30,12 @@ public class Predio {
     }
 
     //IMPRIME TODOS OS PRODUTOS EM UM PRÉDIO
-    public void imprimirPredio(Predio pred){
-        for(int i = 0; i < quant_lado; i++){
-            for(int j = 0; j < quant_nivel; j++){
-                if(pred.espaco[i][j].getProduto() != null){
-                    Produto prod = pred.espaco[i][j].getProduto();
-                    System.out.println("ID: "+prod.getCodigo()+" | Quantidade:"+pred.espaco[i][j].getQuantidade());
-                    System.out.println("Lado " + i+ "|"+ "Nivel " + j);
-                }
-            }
-        }
-    }
+
 
     //INSERIR PRODUTO EM UM ESPAÇO
     public void inserir(Produto produto, int lado, int nivel, int qtd){
         try{
-            espaco[lado][nivel].inserirProdutoEspaco(produto, qtd);
+            espaco[lado][nivel].inserir(produto, qtd);
             //System.out.println("INSERIU PRÉDIO");
         }catch(Exception e){
             System.out.println("Problema ao inserir o Produto em um Espaço");

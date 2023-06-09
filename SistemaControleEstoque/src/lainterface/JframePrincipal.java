@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import estoque.Estoque;
+import estoque.Informacoes;
 import estoque.Produto;
 import login_cadastro.Clientes;
 import login_cadastro.Fornecedores;
@@ -171,6 +172,8 @@ public class JframePrincipal {
         
         this.verificarValidadeEstoque(estoque);
         frame.setVisible(true);
+
+        
         
         }catch(Exception e){
             e.getStackTrace();
@@ -180,6 +183,7 @@ public class JframePrincipal {
 
     public void atualizarOsBotoes(Estoque estoque){
         this.teste.atualizarTextoBotoes(estoque);
+        //this.ordenarData(1014, estoque);
     }
 
     public boolean jaNotificado(int predio, int lado, int nivel){
@@ -224,6 +228,69 @@ public class JframePrincipal {
             }
         }
        }
+    }
+
+    public void ordenarData(int codigo, Estoque estoque){
+        int qtd_predios = estoque.pegarNumeroPredios();
+        int qtd_lados = estoque.pegarNumeroLados();
+        int qtd_niveis = estoque.pegarNumeroNiveis();
+        int a;
+        qtd_predios -= 1;
+        qtd_lados -= 1;
+        qtd_niveis -= 1; 
+        ArrayList<Informacoes> array = new ArrayList<>();
+        //COLOCANDO TODOS OS PRODUTOS COM O CÓDIGO NO ARRAYLIST
+        for(int i = 0; i <= qtd_predios; i++){
+            for(int j = 0; j <= qtd_lados; j++){
+                for(int k = 0; k <= qtd_niveis; k++){
+                    a = estoque.pegarCodigoProduto(i, j, k);
+                    if(a == codigo){
+                        Informacoes inf_aux = new Informacoes(i, j, k, new Produto(codigo, estoque.pegarDiaValidade(i, j, k), estoque.pegarMesValidade(i, j, k), estoque.pegarAnoValidade(i, j, k)));
+                        array.add(inf_aux);
+                    }
+                }
+            }
+        }
+        //ORDENAR POR DATA
+        int count = 0;
+        while(count != array.size()-1){
+            count = 0;
+            //System.out.println(array.size()-1);
+            //System.out.println("DENTRO DO WHILE");
+            for(int i = 0; i < array.size() - 1; i++){
+                //System.out.println("loop: "+i);
+                if(i != array.size()-1){
+                    if(array.get(i).getProdutoAno() > array.get(i+1).getProdutoAno()){
+                        //System.out.println("i: "+array.get(i).getProdutoAno());
+                        //System.out.println("i+1: "+array.get(i+1).getProdutoAno());
+                        Informacoes inf_aux = array.get(i);
+                        //System.out.println("inf: "+inf_aux.getProdutoAno());
+                        array.set(i, array.get(i+1));
+                        array.set(i+1, inf_aux);
+                    }
+                    else if(array.get(i).getProdutoAno() == array.get(i+1).getProdutoAno()){
+                        if(array.get(i).getProdutoMes() > array.get(i+1).getProdutoMes()){
+                            Informacoes inf_aux = array.get(i);
+                            array.set(i, array.get(i+1));
+                            array.set(i+1, inf_aux);
+                        }
+                        else if(array.get(i).getProdutoMes() == array.get(i+1).getProdutoMes()){
+                            if(array.get(i).getProdutoDia() > array.get(i+1).getProdutoDia()){
+                                Informacoes inf_aux = array.get(i);
+                                array.set(i, array.get(i+1));
+                                array.set(i+1, inf_aux);
+                            }else count += 1;
+                        }
+                        else count += 1;
+                    }
+                    else count += 1;
+                }
+            }
+            //System.out.println("Count: "+count);
+        }
+        for (Informacoes informacoes : array) {
+            System.out.println(informacoes.getProdutoAno());
+        }
     }
 
     public void sair(Interno interno){

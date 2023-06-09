@@ -44,7 +44,7 @@ public class Login extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         cmbUsuario = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Email:");
 
@@ -116,6 +116,11 @@ public class Login extends javax.swing.JFrame {
     private void btnEntrarSistemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarSistemaActionPerformed
         if (cmbUsuario.getSelectedItem().equals("Vendedor")) {
             if(AutenticarVendedor()) {
+                Interno interno = new Interno();
+                interno = pegarNomeVendedor();
+                System.out.println(interno.getNome());
+                System.out.println(interno.getTipoInterno());
+                new MenuInicial(interno);
                 dispose();
             }
             else {
@@ -259,6 +264,36 @@ public class Login extends javax.swing.JFrame {
                         interno.setEmail(row[i]);
                         interno.setSenha(row[i+1]);
                         interno.setTipoInterno(TipoInterno.ADM);
+                        reader.close();
+                        return interno;
+                    }
+                }
+            }
+            
+        } catch (HeadlessException | IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+        }
+        return new Interno();
+    }
+
+    private Interno pegarNomeVendedor(){
+        String file = "SistemaControleEstoque/src/db/vendedor.csv";
+        BufferedReader reader = null;
+        String line = "";
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(";");
+                for (int i = 0; i < (row.length - 1); i++) {
+                    String senhaUsuario = new String (txtSenhaUsuario.getPassword());
+                    if (row[i].equals(txtEmail.getText()) && row[i + 1].equalsIgnoreCase(senhaUsuario)) {
+                        Interno interno = new Interno();
+                        String nome = row[i-1];
+                        interno.setNome(nome);
+                        interno.setEmail(row[i]);
+                        interno.setSenha(row[i+1]);
+                        interno.setTipoInterno(TipoInterno.VENDEDOR);
                         reader.close();
                         return interno;
                     }

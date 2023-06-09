@@ -50,7 +50,7 @@ public class Cadastro extends javax.swing.JFrame {
         txtChave = new javax.swing.JPasswordField();
         jLabel7 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Email:");
 
@@ -211,7 +211,6 @@ public class Cadastro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNomeActionPerformed
 
     private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
 
     /**
