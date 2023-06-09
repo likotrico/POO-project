@@ -38,7 +38,7 @@ public class MenuInicial {
         //ADICIONANDO O BOTÃO CARREGAR ESTOQUE
         JButton botao2 = new JButton();
         botao2.setFocusable(false);
-        botao2.addActionListener(e -> new MenuInicial_CarregarEstoque(interno));
+        botao2.addActionListener(e -> new MenuInicial_CarregarEstoque(this, interno));
         Font fonte2 = new Font("Carregar Estoque", Font.BOLD, 17);
         botao2.setText(fonte2.getName());
         botao2.setBounds(75, 117, 150, 40);
@@ -60,6 +60,10 @@ public class MenuInicial {
 
         this.frame.setVisible(true);
 
+    }
+
+    public void fecharJanelaMenu(){
+        this.frame.dispose();
     }
 
     public static void main(String[] args) {

@@ -48,7 +48,7 @@ public class Predio {
     public void inserir(Produto produto, int lado, int nivel, int qtd){
         try{
             espaco[lado][nivel].inserirProdutoEspaco(produto, qtd);
-            System.out.println("INSERIU PRÉDIO");
+            //System.out.println("INSERIU PRÉDIO");
         }catch(Exception e){
             System.out.println("Problema ao inserir o Produto em um Espaço");
         }
@@ -90,23 +90,6 @@ public class Predio {
     }
 
     //REMOVER PRODUTO EM UM ESPAÇO
-    public void removerProdutoPredio(int qtd){
-        while(true){
-            int side = Integer.parseInt(JOptionPane.showInputDialog("Em qual lado deseja remover?"));
-            if(side > this.quant_lado - 1 || side <= 0){ //VALIDANDO O LADO
-                System.out.println("Lado inexistente");
-            }else{
-                int level = Integer.parseInt(JOptionPane.showInputDialog("Em qual nível deseja remover?"));
-                if(level > this.quant_nivel - 1 || level <= 0){//VALIDANDO O NÍVEL
-                    System.out.println("Nível inexistente");
-                }else{
-                    espaco[side][level].remover(qtd);
-                    break;
-                }
-            }
-        }
-    }
-
     public void remover(int lado, int nivel, int qtd){
         try{
             espaco[lado][nivel].remover(qtd);
@@ -124,7 +107,7 @@ public class Predio {
     }
 
     public int verificarValidade(int lado, int nivel, int dia, int mes, int ano){
-        System.out.println("ENTROU NO PRÉDIO");
+        //System.out.println("ENTROU NO PRÉDIO");
         return espaco[lado][nivel].verificarValidade(dia, mes, ano);
     }
 

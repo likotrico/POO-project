@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import estoque.Estoque;
@@ -212,7 +213,7 @@ public class Popup_Adicionar_Produto {
             popup.atualizarInformacoes(estoque, predio, lado, nivel);
             frameprincipal.atualizarOsBotoes(estoque);
             frameprincipal.verificarValidadeEstoque(estoque);
-        }else System.out.println("NÃO VÁLIDO");
+        }else JOptionPane.showMessageDialog(null, "Valores Inválidos!", null, JOptionPane.ERROR_MESSAGE);
     }
     
     public static void main(String[] args) {

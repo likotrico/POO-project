@@ -9,6 +9,7 @@ import java.io.FileReader;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import estoque.Estoque;
@@ -27,7 +28,7 @@ public class MenuInicial_CarregarEstoque {
     private JButton botaoCarregarEstoque;
     private JButton botaoCancelar;
 
-    public MenuInicial_CarregarEstoque(Interno interno){
+    public MenuInicial_CarregarEstoque(MenuInicial menuInicial, Interno interno){
         //ADICIONANDO O JFRAME
         JFrame frame = new JFrame();
         frame.setLayout(null);
@@ -64,7 +65,7 @@ public class MenuInicial_CarregarEstoque {
         //ADICIONANDO O JBUTTON CARREGAR
         JButton botao1 = new JButton();
         botao1.setFocusable(false);
-        botao1.addActionListener(e -> this.carregarEstoque(interno));
+        botao1.addActionListener(e -> this.carregarEstoque(menuInicial, interno));
         Font fontebotao = new Font("Carregar", Font.BOLD, 15);
         botao1.setFont(fontebotao);
         botao1.setText(fontebotao.getName());
@@ -90,71 +91,78 @@ public class MenuInicial_CarregarEstoque {
         this.frame.setVisible(true);
     }
 
-    public void carregarEstoque(Interno interno){
-        if(this.inputNome.getText() != ""){
+    public void carregarEstoque(MenuInicial menuInicial, Interno interno){
+        if(this.inputNome.getText() != null){
             String nome = this.inputNome.getText();
             String path = "SistemaControleEstoque/src/arquivosEstoque/"+nome;
             String pathProdutos = "SistemaControleEstoque/src/arquivosEstoque/"+nome+"/"+nome+"ProdutosEstoque"+"/"+nome+"ProdutosEstoque.csv";
 
             File file = new File(path+"/"+nome+".csv");
-            File file2 = new File(pathProdutos);
-
-            BufferedReader reader = null;
-            String linha = "";
-            int qtd_predio, qtd_lado, qtd_nivel;
-            //PEGANDO AS INFORMAÇÕES DOS PRÉDIOS, LADOS E NÍVEIS
-            try{
-                reader = new BufferedReader(new FileReader(file));
-                reader.readLine();//PARA PULAR A PRIMEIRA LINHA
-                while((linha = reader.readLine()) != null){
-                    String[] coluna = linha.split(";");
-                    qtd_predio = Integer.parseInt(coluna[0]);
-                    qtd_lado = Integer.parseInt(coluna[1]);
-                    qtd_nivel = Integer.parseInt(coluna[2]);
-                    Estoque estoque = new Estoque();
-                    System.out.println("OK");
-                    estoque.iniciarEstoque(estoque, qtd_predio, qtd_lado, qtd_nivel);
-                    BufferedReader reader2 = null;
-                    String linha2 = "";
+            if(file.exists()){
+                File file2 = new File(pathProdutos);
+                if(file2.exists()){
+                    BufferedReader reader = null;
+                    String linha = "";
+                    int qtd_predio, qtd_lado, qtd_nivel;
+                    //PEGANDO AS INFORMAÇÕES DOS PRÉDIOS, LADOS E NÍVEIS
                     try{
-                        reader2 = new BufferedReader(new FileReader(file2));
-                        linha2 = reader2.readLine();//PARA PULAR A PRIMEIRA LINHA
-                        System.out.println(linha2);
-                        while((linha2 = reader2.readLine()) != null){
-                            String[] coluna2 = linha2.split(";");
-                            //bw2.write("predio;lado;nivel;codigo;dia;mes;ano;quantidade\n");
-                            int predio = Integer.parseInt(coluna2[0]);
-                            int lado = Integer.parseInt(coluna2[1]);
-                            int nivel = Integer.parseInt(coluna2[2]);
-                            int codigo = Integer.parseInt(coluna2[3]);
-                            int dia = Integer.parseInt(coluna2[4]);
-                            int mes = Integer.parseInt(coluna2[5]);
-                            int ano = Integer.parseInt(coluna2[6]);
-                            int quantidade = Integer.parseInt(coluna2[7]);
+                        reader = new BufferedReader(new FileReader(file));
+                        reader.readLine();//PARA PULAR A PRIMEIRA LINHA
+                        while((linha = reader.readLine()) != null){
+                            String[] coluna = linha.split(";");
+                            qtd_predio = Integer.parseInt(coluna[0]);
+                            qtd_lado = Integer.parseInt(coluna[1]);
+                            qtd_nivel = Integer.parseInt(coluna[2]);
+                            Estoque estoque = new Estoque();
+                            System.out.println("OK");
+                            estoque.iniciarEstoque(estoque, qtd_predio, qtd_lado, qtd_nivel);
+                            BufferedReader reader2 = null;
+                            String linha2 = "";
+                            try{
+                                reader2 = new BufferedReader(new FileReader(file2));
+                                linha2 = reader2.readLine();//PARA PULAR A PRIMEIRA LINHA
+                                System.out.println(linha2);
+                                while((linha2 = reader2.readLine()) != null){
+                                    String[] coluna2 = linha2.split(";");
+                                    //bw2.write("predio;lado;nivel;codigo;dia;mes;ano;quantidade\n");
+                                    int predio = Integer.parseInt(coluna2[0]);
+                                    int lado = Integer.parseInt(coluna2[1]);
+                                    int nivel = Integer.parseInt(coluna2[2]);
+                                    int codigo = Integer.parseInt(coluna2[3]);
+                                    int dia = Integer.parseInt(coluna2[4]);
+                                    int mes = Integer.parseInt(coluna2[5]);
+                                    int ano = Integer.parseInt(coluna2[6]);
+                                    int quantidade = Integer.parseInt(coluna2[7]);
 
-                            Produto produto = new Produto(codigo);
-                            produto.setDia_val(dia);
-                            produto.setMes_val(mes);
-                            produto.setAno_val(ano);
+                                    Produto produto = new Produto(codigo);
+                                    produto.setDia_val(dia);
+                                    produto.setMes_val(mes);
+                                    produto.setAno_val(ano);
 
-                            estoque.inserir(produto, predio, lado, nivel, quantidade);
-                            
+                                    estoque.inserir(produto, predio, lado, nivel, quantidade);
+                                    
+                                }
+                                reader2.close();
+                                this.frame.dispose();
+                                menuInicial.fecharJanelaMenu();
+                                JframePrincipal frameprincipal = new JframePrincipal();
+                                frameprincipal.iniciarFrame(nome, interno, frameprincipal, estoque, qtd_lado, qtd_nivel, qtd_predio);
+                                frameprincipal.atualizarOsBotoes(estoque);
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
                         }
-                        reader2.close();
-                        this.frame.dispose();
-                        JframePrincipal frameprincipal = new JframePrincipal();
-                        frameprincipal.iniciarFrame(nome, interno, frameprincipal, estoque, qtd_lado, qtd_nivel, qtd_predio);
-                        frameprincipal.atualizarOsBotoes(estoque);
+                        reader.close();
                     }catch(Exception e){
                         e.printStackTrace();
                     }
-                }
-                reader.close();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+                }else JOptionPane.showMessageDialog(null, "Erro: O arquivo dos Produtos não existe!", null, JOptionPane.ERROR_MESSAGE);
 
-        }
+                
+            }else JOptionPane.showMessageDialog(null, "Erro: O arquivo não existe!", null, JOptionPane.ERROR_MESSAGE);
+            
+
+        }else JOptionPane.showMessageDialog(null, "Campo Vazio", null, JOptionPane.ERROR_MESSAGE);
     }
 
     public static void main(String[] args) {

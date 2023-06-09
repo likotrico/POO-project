@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import estoque.Estoque;
@@ -75,7 +76,7 @@ public class Popup_Remover_Produto {
 
         //ADICIONANDO O BOTÃO REMOVER TUDO
         JButton botao2 = new JButton();
-        botao2.addActionListener(e -> this.removerTudo(frameprincipal, popup, estoque, predio, lado, nivel));
+        botao2.addActionListener(e -> this.removerTudo(nomeEstoque, frameprincipal, popup, estoque, predio, lado, nivel));
         botao2.setFocusable(false);
         Font fontebotao2 = new Font("Remover Tudo", Font.BOLD, 13);
         botao2.setFont(fontebotao2);
@@ -110,72 +111,78 @@ public class Popup_Remover_Produto {
 
     public void remover(String nomeEstoque, JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup, Estoque estoque, int predio, int lado, int nivel){
         
-        if(this.inputQuantidadeRemover.getText().matches("\\d+")){
-            int qtd = Integer.parseInt(this.inputQuantidadeRemover.getText());
-            int codigo = estoque.pegarCodigoProduto(predio, lado, nivel);
-            int dia = estoque.pegarDiaValidade(predio, lado, nivel);
+        if(this.inputQuantidadeRemover.getText().matches("\\d+")){ //VERIFICANDO SE OS INPUTS ESTÃO CORRETOS
+            int qtd = Integer.parseInt(this.inputQuantidadeRemover.getText()); //PEGANDO A QUANTIDADE A SER REMOVIDA
+            int codigo = estoque.pegarCodigoProduto(predio, lado, nivel); //PEGANDO O CÓDIGO DO PRODUTO QUE DESEJA SER REMOVIDO
+            int dia = estoque.pegarDiaValidade(predio, lado, nivel); //PEGANDO A DATA DO PRODUTO QUE DESEJA SER REMOVIDO
             int mes = estoque.pegarMesValidade(predio, lado, nivel);
             int ano = estoque.pegarAnoValidade(predio, lado, nivel);
-            int quantidadearquivo = estoque.pegarQuantidade(predio, lado, nivel);
-            int novaquantidade = estoque.pegarQuantidade(predio, lado, nivel) - qtd;
-            estoque.remover(predio, lado, nivel, qtd);
+            int quantidadearquivo = estoque.pegarQuantidade(predio, lado, nivel); //A QUANTIDADE PRESENTE NO ARQUIVO
+            int novaquantidade = estoque.pegarQuantidade(predio, lado, nivel) - qtd; //A QUANTIDADE QUE PRECISA SER ESCRITA NO ARQUIVO
+            if((quantidadearquivo - qtd) >= 0){// VERIFICANDO SE ESTÁ TENTANDO MOVER UMA QUANTIDADE SUPERIOR A EXISTE NO ESPAÇO DE PARTIDA
+                
+                estoque.remover(predio, lado, nivel, qtd); //OPERAÇÃO DE REMOVER DO BACK-END
 
-            //REMOVENDO NO ARQUIVO
-            //String nomeEstoque = "aiai";
-            String pathProdutos = "SistemaControleEstoque/src/arquivosEstoque/"+nomeEstoque+"/"+nomeEstoque+"ProdutosEstoque"+"/"+nomeEstoque+"ProdutosEstoque.csv";
+                //REMOVENDO NO ARQUIVO
+                //PEGANDO O PATH DO ARQUIVO QUE ARMAZENA OS PRODUTOS
+                String pathProdutos = "SistemaControleEstoque/src/arquivosEstoque/"+nomeEstoque+"/"+nomeEstoque+"ProdutosEstoque"+"/"+nomeEstoque+"ProdutosEstoque.csv";
             
-            File file = new File(pathProdutos);
-            BufferedReader reader = null;
-            String linha = "";
+                File file = new File(pathProdutos); //ACESSANDO O ARQUIVO
+                BufferedReader reader = null;
+                String linha = "";
 
-            ArrayList<String> array = new ArrayList<>();
+                ArrayList<String> array = new ArrayList<>();//ARRAY QUE IRÁ MANTER AS LINHAS DO ARQUIVO LIDO
 
-            //PEGANDO UM ARQUIVO IGUAL
-            try {
-                reader = new BufferedReader(new FileReader(file));
-                linha = reader.readLine();//PARA PULAR A PRIMEIRA LINHA
-                while((linha = reader.readLine()) != null){
-                    System.out.println("ENTROU LOOP");
-                    String[] coluna = linha.split(";");
-                    if(linha != ""){
-                        if((Integer.parseInt(coluna[0]) == predio )&& Integer.parseInt(coluna[1])==lado && Integer.parseInt(coluna[2])==nivel && Integer.parseInt(coluna[3])==codigo && Integer.parseInt(coluna[4])==dia && Integer.parseInt(coluna[5])==mes &&Integer.parseInt(coluna[6])==ano && Integer.parseInt(coluna[7])==quantidadearquivo){
-                            if(novaquantidade > 0){
-                                String a =(""+coluna[0]+";"+coluna[1]+";"+coluna[2]+";"+coluna[3]+";"+coluna[4]+";"+coluna[5]+";"+coluna[6]+";"+novaquantidade+"");
-                                array.add(a);
+                //PEGANDO UM ARQUIVO IGUAL
+                try {
+                    reader = new BufferedReader(new FileReader(file));
+                    linha = reader.readLine();//PARA PULAR A PRIMEIRA LINHA
+                    while((linha = reader.readLine()) != null){ //LAÇO PARA FICAR LENDO AS LINHAS DO ARQUIVO
+                        //System.out.println("ENTROU LOOP");
+                        String[] coluna = linha.split(";");// SEPARAR PELO ;
+                        if(linha != ""){//VERIFICANDO SE A LINHA NÃO ESTÁ VAZIA POR ALGUMA RAZÃO
+                            //VERIFICANDO SE A LINHA A SER ANALISADA É A LINHA QUE DESEJAMOS REMOVER A QUANTIDADE A SER MOVIDA
+                            if((Integer.parseInt(coluna[0]) == predio )&& Integer.parseInt(coluna[1])==lado && Integer.parseInt(coluna[2])==nivel && Integer.parseInt(coluna[3])==codigo && Integer.parseInt(coluna[4])==dia && Integer.parseInt(coluna[5])==mes &&Integer.parseInt(coluna[6])==ano && Integer.parseInt(coluna[7])==quantidadearquivo){
+                                if(novaquantidade > 0){//VERIFICANDO SE A NOVA QUANTIDADE É POSITIVA, SE FOR NEGATIVA ENTÃO NÃO PRECISAMOS SALVÁ-LA NO ARQUIVO.
+                                    //ADICIONANDO A LINHA COM A NOVA QUANTIDADE
+                                    String a =(""+coluna[0]+";"+coluna[1]+";"+coluna[2]+";"+coluna[3]+";"+coluna[4]+";"+coluna[5]+";"+coluna[6]+";"+novaquantidade+"");
+                                    array.add(a); 
+                                }
+                            }else{
+                                array.add(linha);
                             }
-                        }else{
-                            array.add(linha);
                         }
                     }
-                }
-                reader.close();
+                    reader.close();
 
-                BufferedWriter bw;
-                bw = new BufferedWriter(new FileWriter(file, true));
-                bw.close(); 
-                
-                BufferedWriter bw2 = new BufferedWriter(new FileWriter(file));
-                bw2.write("predio;lado;nivel;codigo;dia;mes;ano;quantidade");
-                for (String elemento : array) {
-                    bw2.write("\n"+elemento);
+                    //ESCREVENDO AS LINHAS LIDAS NO NOVO ARQUIVO 
+                    BufferedWriter bw;
+                    bw = new BufferedWriter(new FileWriter(file, true));
+                    bw.close(); 
+                    
+                    BufferedWriter bw2 = new BufferedWriter(new FileWriter(file));
+                    bw2.write("predio;lado;nivel;codigo;dia;mes;ano;quantidade");
+                    for (String elemento : array) {
+                        bw2.write("\n"+elemento);
+                    }
+                    bw2.newLine();
+                    bw2.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                bw2.newLine();
-                bw2.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
-            this.frame.dispose();
-            frameprincipal.atualizarOsBotoes(estoque);
-            popup.atualizarInformacoes(estoque, predio, lado, nivel);
+                this.frame.dispose();//FECHANDO A JANELA POP-UP
+                frameprincipal.atualizarOsBotoes(estoque);//ATUALIZANDO OS BOTÕES QUE SERÃO IMPRESSOS NA JFRAME PRINCIPAL
+                popup.atualizarInformacoes(estoque, predio, lado, nivel);//ATUALIZANDO AS INFORMAÇÕES DO POP-UP
+            }else JOptionPane.showMessageDialog(null, "Erro: A quantidade para ser removida superior a existente!", null, JOptionPane.ERROR_MESSAGE);
             
-        }else{
-            System.out.println("Digite um valor válido!");
-        }
+            
+        }else JOptionPane.showMessageDialog(null, "Valores Inválidos!", null, JOptionPane.ERROR_MESSAGE);
+        
         
     }
 
-    public void removerTudo(JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup, Estoque estoque, int predio, int lado, int nivel){
+    public void removerTudo(String nomeEstoque, JframePrincipal frameprincipal, Popup_Botoes_Predio_interface popup, Estoque estoque, int predio, int lado, int nivel){
         int codigo = estoque.pegarCodigoProduto(predio, lado, nivel);
         int dia = estoque.pegarDiaValidade(predio, lado, nivel);
         int mes = estoque.pegarMesValidade(predio, lado, nivel);
@@ -183,7 +190,7 @@ public class Popup_Remover_Produto {
         
         estoque.removerTudo(predio, lado, nivel);
 
-        String nomeEstoque = "aiai";
+
         String pathProdutos = "SistemaControleEstoque/src/arquivosEstoque/"+nomeEstoque+"/"+nomeEstoque+"ProdutosEstoque"+"/"+nomeEstoque+"ProdutosEstoque.csv";
         
         File file = new File(pathProdutos);

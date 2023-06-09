@@ -1,7 +1,5 @@
 package estoque;
 
-import java.util.ArrayList;
-
 public class Produto {
 
     // -1 para tratar os casos de quando não tivermos informações do produto

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import estoque.Estoque;
@@ -161,62 +162,172 @@ public class Popup_Mover_Produto {
         int nivel_part = nivel;
 
         if(this.inputPredioDestino.getText().matches("\\d+") && this.inputLadoDestino.getText().matches("\\d+") && this.inputNivelDestino.getText().matches("\\d+") && this.inputQuantidade.getText().matches("\\d+")){
-            System.out.println("ENTROU");
+            //System.out.println("ENTROU");
             int predio_dest = Integer.parseInt(this.inputPredioDestino.getText());
             int lado_dest = Integer.parseInt(this.inputLadoDestino.getText());
             int nivel_dest = Integer.parseInt(this.inputNivelDestino.getText());
             int qtd = Integer.parseInt(this.inputQuantidade.getText());
 
+            int qtd_predios = estoque.pegarNumeroPredios();
+            int qtd_lados = estoque.pegarNumeroLados();
+            int qtd_niveis = estoque.pegarNumeroNiveis();
+            qtd_predios -= 1;
+            qtd_lados -= 1;
+            qtd_niveis -= 1; 
+
             predio_dest -= 1;
             lado_dest -= 1;
             nivel_dest -= 1;
 
-            if(estoque.existeProduto(predio_dest, lado_dest, nivel_dest)){
-                if(estoque.mesmoProduto(predio_part, lado_part, nivel_part, predio_dest, lado_dest, nivel_dest)){
-                    //CASO DE MOVER UM PRODUTO PARA UM ESPAÇO COM O MESMO PRODUTO
+            if(predio_dest <= qtd_predios && lado_dest <= qtd_lados && nivel_dest <= qtd_niveis){
+                if(qtd > 0){
+                    if(estoque.existeProduto(predio_dest, lado_dest, nivel_dest)){
+                        if(estoque.mesmoProduto(predio_part, lado_part, nivel_part, predio_dest, lado_dest, nivel_dest)){
+                            if(!(predio_part == predio_dest && lado_part == lado_dest && nivel_part == nivel_dest)){
+                                //CASO DE MOVER UM PRODUTO PARA UM ESPAÇO COM O MESMO PRODUTO
+                                int qtdArquivoPart = estoque.pegarQuantidade(predio_part, lado_part, nivel_part);
+                                int novaQuantidadePart = qtdArquivoPart - qtd;
+                                
+                                int qtdArquivoDest = estoque.pegarQuantidade(predio_dest, lado_dest, nivel_dest);
+                                int novaQuantidadeDest = qtdArquivoDest + qtd;
+
+                                int codigo = estoque.pegarCodigoProduto(predio_dest, lado_dest, nivel_dest);
+                                int dia = estoque.pegarDiaValidade(predio_dest, lado_dest, nivel_dest);
+                                int mes = estoque.pegarMesValidade(predio_dest, lado_dest, nivel_dest);
+                                int ano = estoque.pegarAnoValidade(predio_dest, lado_dest, nivel_dest);
+
+
+                                estoque.subtrairQuantidade(predio_part, lado_part, nivel_part, qtd);
+                                estoque.incrementarQuantidade(predio_dest, lado_dest, nivel_dest, qtd);
+
+
+                                //String nomeEstoque = "aiai";
+                                String pathProdutos = "SistemaControleEstoque/src/arquivosEstoque/"+nomeEstoque+"/"+nomeEstoque+"ProdutosEstoque"+"/"+nomeEstoque+"ProdutosEstoque.csv";
+                            
+                                File file = new File(pathProdutos);
+                                BufferedReader reader = null;
+                                String linha = "";
+
+                                ArrayList<String> array = new ArrayList<>();
+
+                                //PEGANDO UM ARQUIVO IGUAL
+                                try {
+                                    reader = new BufferedReader(new FileReader(file));
+                                    linha = reader.readLine();//PARA PULAR A PRIMEIRA LINHA
+                                    while((linha = reader.readLine()) != null){
+                                        //System.out.println("ENTROU LOOP");
+                                        String[] coluna = linha.split(";");
+                                        if(linha != ""){
+                                            //LOCAL PARTIDA
+                                            if((Integer.parseInt(coluna[0]) == predio_part )&& Integer.parseInt(coluna[1])==lado_part && Integer.parseInt(coluna[2])==nivel_part && Integer.parseInt(coluna[3])==codigo && Integer.parseInt(coluna[4])==dia && Integer.parseInt(coluna[5])==mes &&Integer.parseInt(coluna[6])==ano && Integer.parseInt(coluna[7])==qtdArquivoPart){
+                                                if(novaQuantidadePart > 0){
+                                                    String a =(""+coluna[0]+";"+coluna[1]+";"+coluna[2]+";"+coluna[3]+";"+coluna[4]+";"+coluna[5]+";"+coluna[6]+";"+novaQuantidadePart+"");
+                                                    array.add(a);
+                                                }
+                                            }//LOCAL DESTINO
+                                            else if((Integer.parseInt(coluna[0]) == predio_dest )&& Integer.parseInt(coluna[1])==lado_dest && Integer.parseInt(coluna[2])==nivel_dest && Integer.parseInt(coluna[3])==codigo && Integer.parseInt(coluna[4])==dia && Integer.parseInt(coluna[5])==mes &&Integer.parseInt(coluna[6])==ano && Integer.parseInt(coluna[7])==qtdArquivoDest){
+                                                if(novaQuantidadeDest > 0){
+                                                    String a =(""+coluna[0]+";"+coluna[1]+";"+coluna[2]+";"+coluna[3]+";"+coluna[4]+";"+coluna[5]+";"+coluna[6]+";"+novaQuantidadeDest+"");
+                                                    array.add(a);
+                                                }
+                                            }else{
+                                                array.add(linha);
+                                            }
+                                        }
+                                    }
+                                    reader.close();
+
+                                    BufferedWriter bw;
+                                    bw = new BufferedWriter(new FileWriter(file, true));
+                                    bw.close(); 
+                                    
+                                    BufferedWriter bw2 = new BufferedWriter(new FileWriter(file));
+                                    bw2.write("predio;lado;nivel;codigo;dia;mes;ano;quantidade");
+                                    for (String elemento : array) {
+                                        bw2.write("\n"+elemento);
+                                    }
+                                    bw2.newLine();
+                                    bw2.close();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                this.frame.dispose();
+                                frameprincipal.atualizarOsBotoes(estoque);
+                                frameprincipal.verificarValidadeEstoque(estoque);
+                                pop.atualizarInformacoes(estoque, predio, lado, nivel);
+                                pop.fecharJanela();
+                            }
+                            else JOptionPane.showMessageDialog(null, "São pessoas feito você que fazem o programador ter que tratar esse tipo de exceção >:(", null, JOptionPane.ERROR_MESSAGE);
+                            
+                        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+                }else if(!(estoque.existeProduto(predio_dest, lado_dest, nivel_dest))){
+                    //CASO DE MOVER UM PRODUTO PARA UM ESPAÇO VAZIO
                     int qtdArquivoPart = estoque.pegarQuantidade(predio_part, lado_part, nivel_part);
                     int novaQuantidadePart = qtdArquivoPart - qtd;
-                    
-                    int qtdArquivoDest = estoque.pegarQuantidade(predio_dest, lado_dest, nivel_dest);
-                    int novaQuantidadeDest = qtdArquivoDest + qtd;
 
-                    int codigo = estoque.pegarCodigoProduto(predio_dest, lado_dest, nivel_dest);
-                    int dia = estoque.pegarDiaValidade(predio_dest, lado_dest, nivel_dest);
-                    int mes = estoque.pegarMesValidade(predio_dest, lado_dest, nivel_dest);
-                    int ano = estoque.pegarAnoValidade(predio_dest, lado_dest, nivel_dest);
+                    int novaQuantidadeDest = qtd;
 
+                    int codigo = estoque.pegarCodigoProduto(predio_part, lado_part, nivel_part);
+                    int dia = estoque.pegarDiaValidade(predio_part, lado_part, nivel_part);
+                    int mes = estoque.pegarMesValidade(predio_part, lado_part, nivel_part);
+                    int ano = estoque.pegarAnoValidade(predio_part, lado_part, nivel_part);
 
+                    /*OPERAÇÃO NO BACK-END */
                     estoque.subtrairQuantidade(predio_part, lado_part, nivel_part, qtd);
-                    estoque.incrementarQuantidade(predio_dest, lado_dest, nivel_dest, qtd);
+                    estoque.incrementarQuantidade(predio_dest, lado_dest, nivel_dest, qtd);/*ESSA LINHA É NECESSÁRIA? */
+                    
+                    Produto produto = new Produto(codigo);
+                    produto.setDia_val(dia);
+                    produto.setMes_val(mes);
+                    produto.setAno_val(ano);
+
+                    estoque.inserir(produto, predio_dest, lado_dest, nivel_dest, qtd);
 
 
-                    //String nomeEstoque = "aiai";
-                    String pathProdutos = "SistemaControleEstoque/src/arquivosEstoque/"+nomeEstoque+"/"+nomeEstoque+"ProdutosEstoque"+"/"+nomeEstoque+"ProdutosEstoque.csv";
-                
-                    File file = new File(pathProdutos);
-                    BufferedReader reader = null;
-                    String linha = "";
+                    /*ESCREVER NO ARQUIVO COMO SE ESTIVESSE ADICIONANDO*/
+                    String path = "SistemaControleEstoque/src/arquivosEstoque/"+nomeEstoque+"/"+nomeEstoque+"ProdutosEstoque"+"/"+nomeEstoque+"ProdutosEstoque.csv";
+                    File file = new File(path);
+                    BufferedWriter bw;
+                    try {
+                        bw = new BufferedWriter(new FileWriter(file, true));
+                        bw.write(predio_dest+";"+lado_dest+";"+nivel_dest+";"+codigo+";"+dia+";"+mes+";"+ano+";"+novaQuantidadeDest+"\n");
+                        bw.flush();
+                        bw.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    /*ESCREVENDO NO ARQUIVO COMO VAI FICAR O PRÉDIO PARTIDA*/
 
                     ArrayList<String> array = new ArrayList<>();
 
                     //PEGANDO UM ARQUIVO IGUAL
+                    BufferedReader reader = null;
+                    String linha = "";
                     try {
                         reader = new BufferedReader(new FileReader(file));
                         linha = reader.readLine();//PARA PULAR A PRIMEIRA LINHA
                         while((linha = reader.readLine()) != null){
-                            System.out.println("ENTROU LOOP");
+                            //System.out.println("ENTROU LOOP");
                             String[] coluna = linha.split(";");
                             if(linha != ""){
-                                //LOCAL PARTIDA
                                 if((Integer.parseInt(coluna[0]) == predio_part )&& Integer.parseInt(coluna[1])==lado_part && Integer.parseInt(coluna[2])==nivel_part && Integer.parseInt(coluna[3])==codigo && Integer.parseInt(coluna[4])==dia && Integer.parseInt(coluna[5])==mes &&Integer.parseInt(coluna[6])==ano && Integer.parseInt(coluna[7])==qtdArquivoPart){
                                     if(novaQuantidadePart > 0){
                                         String a =(""+coluna[0]+";"+coluna[1]+";"+coluna[2]+";"+coluna[3]+";"+coluna[4]+";"+coluna[5]+";"+coluna[6]+";"+novaQuantidadePart+"");
-                                        array.add(a);
-                                    }
-                                }//LOCAL DESTINO
-                                else if((Integer.parseInt(coluna[0]) == predio_dest )&& Integer.parseInt(coluna[1])==lado_dest && Integer.parseInt(coluna[2])==nivel_dest && Integer.parseInt(coluna[3])==codigo && Integer.parseInt(coluna[4])==dia && Integer.parseInt(coluna[5])==mes &&Integer.parseInt(coluna[6])==ano && Integer.parseInt(coluna[7])==qtdArquivoDest){
-                                    if(novaQuantidadeDest > 0){
-                                        String a =(""+coluna[0]+";"+coluna[1]+";"+coluna[2]+";"+coluna[3]+";"+coluna[4]+";"+coluna[5]+";"+coluna[6]+";"+novaQuantidadeDest+"");
                                         array.add(a);
                                     }
                                 }else{
@@ -225,10 +336,10 @@ public class Popup_Mover_Produto {
                             }
                         }
                         reader.close();
-
-                        BufferedWriter bw;
-                        bw = new BufferedWriter(new FileWriter(file, true));
-                        bw.close(); 
+        
+                        BufferedWriter bw3;
+                        bw3 = new BufferedWriter(new FileWriter(file, true));
+                        bw3.close(); 
                         
                         BufferedWriter bw2 = new BufferedWriter(new FileWriter(file));
                         bw2.write("predio;lado;nivel;codigo;dia;mes;ano;quantidade");
@@ -241,126 +352,18 @@ public class Popup_Mover_Produto {
                         e.printStackTrace();
                     }
 
+                    //System.out.println("DEU CERTO2");
                     this.frame.dispose();
                     frameprincipal.atualizarOsBotoes(estoque);
-                    pop.atualizarInformacoes(estoque, predio, lado, nivel);
-
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-
-            }else{
-                //CASO DE MOVER UM PRODUTO PARA UM ESPAÇO VAZIO
-                int qtdArquivoPart = estoque.pegarQuantidade(predio_part, lado_part, nivel_part);
-                int novaQuantidadePart = qtdArquivoPart - qtd;
-
-                int novaQuantidadeDest = qtd;
-
-                int codigo = estoque.pegarCodigoProduto(predio_part, lado_part, nivel_part);
-                int dia = estoque.pegarDiaValidade(predio_part, lado_part, nivel_part);
-                int mes = estoque.pegarMesValidade(predio_part, lado_part, nivel_part);
-                int ano = estoque.pegarAnoValidade(predio_part, lado_part, nivel_part);
-
-                /*OPERAÇÃO NO BACK-END */
-                estoque.subtrairQuantidade(predio_part, lado_part, nivel_part, qtd);
-                estoque.incrementarQuantidade(predio_dest, lado_dest, nivel_dest, qtd);/*ESSA LINHA É NECESSÁRIA? */
-                
-                Produto produto = new Produto(codigo);
-                produto.setDia_val(dia);
-                produto.setMes_val(mes);
-                produto.setAno_val(ano);
-
-                estoque.inserir(produto, predio_dest, lado_dest, nivel_dest, qtd);
-
-
-                /*ESCREVER NO ARQUIVO COMO SE ESTIVESSE ADICIONANDO*/
-                //String nomeEstoque = "aiai";
-                String path = "SistemaControleEstoque/src/arquivosEstoque/"+nomeEstoque+"/"+nomeEstoque+"ProdutosEstoque"+"/"+nomeEstoque+"ProdutosEstoque.csv";
-                File file = new File(path);
-                BufferedWriter bw;
-                try {
-                    bw = new BufferedWriter(new FileWriter(file, true));
-                    bw.write(predio_dest+";"+lado_dest+";"+nivel_dest+";"+codigo+";"+dia+";"+mes+";"+ano+";"+novaQuantidadeDest+"\n");
-                    bw.flush();
-                    bw.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                /*ESCREVENDO NO ARQUIVO COMO VAI FICAR O PRÉDIO PARTIDA*/
-
-                ArrayList<String> array = new ArrayList<>();
-
-                //PEGANDO UM ARQUIVO IGUAL
-                //String pathProdutos = "SistemaControleEstoque/src/arquivosEstoque/"+nomeEstoque+"/"+nomeEstoque+"ProdutosEstoque"+"/"+nomeEstoque+"ProdutosEstoque.csv";
+                    frameprincipal.verificarValidadeEstoque(estoque);
+                    pop.atualizarInformacoes(estoque, predio_part, lado_part, nivel_part);
+                    pop.fecharJanela();
+                }else JOptionPane.showMessageDialog(null, "Há um produto diferente no local indicado!", null, JOptionPane.ERROR_MESSAGE); 
+            }else JOptionPane.showMessageDialog(null, "Tentando remover zero quantidades do produto? 0-o", null, JOptionPane.ERROR_MESSAGE);
+            }else JOptionPane.showMessageDialog(null, "Algum dos locais indicados não existe!", null, JOptionPane.ERROR_MESSAGE);
+             
             
-                //File arquivoDosProdutos = new File(pathProdutos);
-
-                BufferedReader reader = null;
-                String linha = "";
-                try {
-                    reader = new BufferedReader(new FileReader(file));
-                    linha = reader.readLine();//PARA PULAR A PRIMEIRA LINHA
-                    while((linha = reader.readLine()) != null){
-                        System.out.println("ENTROU LOOP");
-                        String[] coluna = linha.split(";");
-                        if(linha != ""){
-                            if((Integer.parseInt(coluna[0]) == predio_part )&& Integer.parseInt(coluna[1])==lado_part && Integer.parseInt(coluna[2])==nivel_part && Integer.parseInt(coluna[3])==codigo && Integer.parseInt(coluna[4])==dia && Integer.parseInt(coluna[5])==mes &&Integer.parseInt(coluna[6])==ano && Integer.parseInt(coluna[7])==qtdArquivoPart){
-                                if(novaQuantidadePart > 0){
-                                    String a =(""+coluna[0]+";"+coluna[1]+";"+coluna[2]+";"+coluna[3]+";"+coluna[4]+";"+coluna[5]+";"+coluna[6]+";"+novaQuantidadePart+"");
-                                    array.add(a);
-                                }
-                            }else{
-                                array.add(linha);
-                            }
-                        }
-                    }
-                    reader.close();
-    
-                    BufferedWriter bw3;
-                    bw3 = new BufferedWriter(new FileWriter(file, true));
-                    bw3.close(); 
-                    
-                    BufferedWriter bw2 = new BufferedWriter(new FileWriter(file));
-                    bw2.write("predio;lado;nivel;codigo;dia;mes;ano;quantidade");
-                    for (String elemento : array) {
-                        bw2.write("\n"+elemento);
-                    }
-                    bw2.newLine();
-                    bw2.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-
-                System.out.println("DEU CERTO2");
-                this.frame.dispose();
-                frameprincipal.atualizarOsBotoes(estoque);
-                pop.atualizarInformacoes(estoque, predio_part, lado_part, nivel_part);
-                pop.fecharJanela();
-            }
-        }else System.out.println("Não moveu");
+        }else JOptionPane.showMessageDialog(null, "Valores Inválidos!", null, JOptionPane.ERROR_MESSAGE);
         
     }
 

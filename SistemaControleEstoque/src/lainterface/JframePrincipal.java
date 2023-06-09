@@ -1,6 +1,8 @@
 package lainterface;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -9,6 +11,8 @@ import javax.swing.JScrollPane;
 
 import estoque.Estoque;
 import estoque.Produto;
+import login_cadastro.Clientes;
+import login_cadastro.Fornecedores;
 import usuarios.Interno;
 import usuarios.TipoInterno;
 
@@ -28,10 +32,21 @@ public class JframePrincipal {
     private Painel_notificacoes painel_notificacoes;
 
     private Painel_predios_interface teste;
-
-    /*CONSTRUTOR DA JFRAME*/
     
-    //remover dps
+    private ArrayList<Aux> conjuntoNotificado;
+
+    private class Aux{
+        private int predio;
+        private int lado;
+        private int nivel;
+
+        private Aux(int predio, int lado, int nivel){
+            this.predio = predio;
+            this.lado = lado;
+            this.nivel = nivel;
+        }
+    }
+    /*CONSTRUTOR DA JFRAME*/
     public JframePrincipal(){
 
     }
@@ -40,6 +55,8 @@ public class JframePrincipal {
         
         try{int altura = 900;
         int largura = 600;
+        this.conjuntoNotificado = new ArrayList<Aux>();
+
         JFrame frame = new JFrame();
         frame.setLayout(null);
         frame.setSize(altura, largura);
@@ -96,6 +113,7 @@ public class JframePrincipal {
 
         //CRIANDO O BOTÃO DE SAIR
         JButton botao = new JButton();
+        botao.addActionListener(e -> this.sair(interno));
         botao.setFocusable(false);
         botao.setText("Sair");
         botao.setBounds(80, 10, 70, 30);
@@ -110,9 +128,12 @@ public class JframePrincipal {
         //VERIFICANDO SE O USUÁRIO TEM PERMISSÃO PARA ACESSAR O CONTEÚDO DESSE BOTÃO
         if(interno.getTipoInterno() == TipoInterno.ADM) botao1.setEnabled(true);
         else botao1.setEnabled(false);
-
+        
+        
         //CRIANDO O BOTÃO DE FORNECEDORES
         JButton botao2 = new JButton();
+        new Fornecedores();
+        botao2.addActionListener(e -> Fornecedores.main(null));
         botao2.setFocusable(false);
         botao2.setText("Fornecedores");
         botao2.setBounds(290, 10, 120, 30);
@@ -120,6 +141,8 @@ public class JframePrincipal {
 
         //CRIANDO O BOTÃO DE CLIENTES
         JButton botao3 = new JButton();
+        new Clientes();
+        botao3.addActionListener(e -> Clientes.main(null));
         botao3.setFocusable(false);
         botao3.setText("Clientes");
         botao3.setBounds(420, 10, 120, 30);
@@ -159,32 +182,53 @@ public class JframePrincipal {
         this.teste.atualizarTextoBotoes(estoque);
     }
 
+    public boolean jaNotificado(int predio, int lado, int nivel){
+        for (Aux eleAux : this.conjuntoNotificado) {
+            if(eleAux.predio == predio){
+                if(eleAux.lado == lado){
+                    if(eleAux.nivel == nivel) return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void verificarValidadeEstoque(Estoque estoque){
        int qtd_predios = estoque.pegarNumeroPredios();
-       //System.out.println("Prédios: "+qtd_predios);
        int qtd_lados = estoque.pegarNumeroLados();
-       //System.out.println("Lados: "+qtd_lados);
        int qtd_niveis = estoque.pegarNumeroNiveis();
-       //System.out.println("Níveis: "+qtd_niveis);
        qtd_predios -= 1;
        qtd_lados -= 1;
        qtd_niveis -= 1; 
-       int dia = 30;
-       int mes = 5;
-       int ano = 2022;
+       Calendar calendar = Calendar.getInstance();
+       
+       int dia = calendar.get(Calendar.DAY_OF_MONTH);
+       int mes = calendar.get(Calendar.MONTH) + 1;
+       int ano = calendar.get(Calendar.YEAR);
+
        for(int i = 0; i <= qtd_predios; i++){
         for(int j = 0; j <= qtd_lados; j++){
             for(int k = 0; k <= qtd_niveis; k++){
                 int a  = estoque.verificarValidade(i, j, k, dia, mes, ano);
                 if(a == 0){
-                    this.painel_notificacoes.adicionarNotificacao(""+i+j+k);
-                    this.scrollNotificacoes.setVisible(false);
-                    this.scrollNotificacoes.setVisible(true);
+                    Aux aux = new Aux(i, j, k);
+                    if(!(jaNotificado(i, j, k))){
+                        this.conjuntoNotificado.add(aux);
+                        this.painel_notificacoes.adicionarNotificacao("Prédio: "+(i+1)+"/ Lado: "+(j+1)+" / Nível: "+(k+1));
+                        this.painel_notificacoes.adicionarNotificacao("Produto Vencido!");
+                        this.scrollNotificacoes.setVisible(false);
+                        this.scrollNotificacoes.setVisible(true);
+                    }
                 }
-                System.out.println("Prédio: "+i+" Lado: "+j+" Nível: "+k+" Val: "+a);
+                //System.out.println("Prédio: "+i+" Lado: "+j+" Nível: "+k+" Val: "+a);
             }
         }
        }
+    }
+
+    public void sair(Interno interno){
+        this.frame.dispose();
+        new MenuInicial(interno);
     }
 
     /*GETTERS AND SETTERS */
@@ -286,7 +330,7 @@ public class JframePrincipal {
         interno.setTipoInterno(TipoInterno.ADM);
         String nomeEstoque = "a";
         
-        framePrincipal.iniciarFrame(nomeEstoque, interno, framePrincipal, estoque, qtd_lados, qtd_niveis, qtd_predios);
+        framePrincipal.iniciarFrame(nomeEstoque, interno, framePrincipal ,estoque, qtd_lados, qtd_niveis, qtd_predios);
        
     }
 }
