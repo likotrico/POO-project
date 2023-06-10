@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import estoque.Estoque;
-import estoque.FiltrarProduto;
+import lainterface.FiltrarProduto;
 import estoque.Informacoes;
 import estoque.Produto;
 import login_cadastro.Clientes;
