@@ -25,7 +25,7 @@ public class Painel_notificacoes extends JPanel{
 
         this.setBounds(0, 0, largura, altura);
         this.setPreferredSize(new Dimension(largura, altura));
-        this.setBackground(Color.PINK);
+        //this.setBackground(Color.PINK);
         
     }
 

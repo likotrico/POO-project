@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import estoque.Estoque;
-import estoque.FiltrarProduto;
 import estoque.Informacoes;
 import estoque.Produto;
 import login_cadastro.Clientes;
@@ -76,7 +75,7 @@ public class JframePrincipal {
         JLabel label = new JLabel();
         label.setBackground(Color.BLUE);
         label.setBounds(80, 85, 200, 415);
-        label.setOpaque(true);
+        //label.setOpaque(true);
         this.notificacoes = label;
         
         //CRIANDO O SCROLL PANE COM AS NOTIFICAÇÕES
@@ -84,7 +83,7 @@ public class JframePrincipal {
         this.painel_notificacoes = a;
         JScrollPane scroll2 = new JScrollPane(this.painel_notificacoes);
         scroll2.setBackground(Color.PINK);
-        scroll2.setOpaque(true);
+        //scroll2.setOpaque(true);
         scroll2.setBounds(80, 85, 200, 415);
         scroll2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.scrollNotificacoes = scroll2;
@@ -93,7 +92,7 @@ public class JframePrincipal {
         //CRIANDO A JLABEL DE SAUDAÇÃO
         JLabel label1 = new JLabel();
         label1.setBackground(Color.GREEN);
-        label1.setOpaque(true);
+        //label1.setOpaque(true);
         //FONTE DA LABEL
         Font fonte = new Font("Olá, "+interno.getNome()+" ("+interno.getTipoInterno()+")", Font.BOLD, 21);
         label1.setFont(fonte);
@@ -104,7 +103,7 @@ public class JframePrincipal {
         //CRIANDO A JLABEL DO TEXTO NOTIFICAÇÕES
         JLabel label2 = new JLabel();
         label2.setBackground(Color.GRAY);
-        label2.setOpaque(true);
+        //label2.setOpaque(true);
         Font fonte1 = new Font("Notificações", Font.BOLD, 15);
         label2.setFont(fonte1);
         label2.setText(fonte1.getName());

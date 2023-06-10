@@ -1,9 +1,13 @@
-package estoque;
+package lainterface;
 
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+import estoque.Estoque;
+import estoque.Informacoes;
+import estoque.Produto;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
