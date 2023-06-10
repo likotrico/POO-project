@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import estoque.Estoque;
+import estoque.FiltrarProduto;
 import estoque.Informacoes;
 import estoque.Produto;
 import login_cadastro.Clientes;
@@ -26,7 +27,6 @@ public class JframePrincipal {
     private JLabel notificacoes;
     private JLabel saudacao;
     private JButton botaosair;
-    private JButton botaoCadastrarUsuarios;
     private JButton botaoFornecedores;
     private JButton botaoClientes;
     private JButton botaoFiltros;
@@ -121,14 +121,7 @@ public class JframePrincipal {
         this.botaosair = botao;
 
         //CRIANDO O BOTÃO DE CADASTRAR NOVOS USUÁRIOS
-        JButton botao1 = new JButton();
-        botao1.setFocusable(false);
-        botao1.setText("N.F.E.");
-        botao1.setBounds(160, 10, 120, 30);
-        this.botaoCadastrarUsuarios = botao1;
-        //VERIFICANDO SE O USUÁRIO TEM PERMISSÃO PARA ACESSAR O CONTEÚDO DESSE BOTÃO
-        if(interno.getTipoInterno() == TipoInterno.ADM) botao1.setEnabled(true);
-        else botao1.setEnabled(false);
+        
         
         
         //CRIANDO O BOTÃO DE FORNECEDORES
@@ -151,6 +144,8 @@ public class JframePrincipal {
 
         //CRIANDO O BOTÃO DE FILTROS
         JButton botao4 = new JButton();
+        new FiltrarProduto(estoque);
+        botao4.addActionListener(e -> FiltrarProduto.main(null, estoque));
         botao4.setFocusable(false);
         botao4.setText("Filtrar");
         botao4.setBounds(550, 10, 80, 30);
@@ -165,7 +160,6 @@ public class JframePrincipal {
         this.frame.add(this.textoNotificacoes);
         //ADICIONANDO BOTÕES
         this.frame.add(this.botaosair);
-        this.frame.add(this.botaoCadastrarUsuarios);
         this.frame.add(this.botaoFornecedores);
         this.frame.add(this.botaoClientes);
         this.frame.add(this.botaoFiltros);
@@ -330,13 +324,6 @@ public class JframePrincipal {
         this.botaosair = botaosair;
     }
 
-    public JButton getBotaoCadastrarUsuarios() {
-        return botaoCadastrarUsuarios;
-    }
-
-    public void setBotaoCadastrarUsuarios(JButton botaoCadastrarUsuarios) {
-        this.botaoCadastrarUsuarios = botaoCadastrarUsuarios;
-    }
 
     public JButton getBotaoClientes() {
         return botaoClientes;
