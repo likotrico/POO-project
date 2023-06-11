@@ -9,9 +9,7 @@ public class Estoque{
         this.estoque = new Predio[num];
     }
 
-    // FUNÇÃO PARA PEDIR AO USUÁRIO A QUANTOS PRÉDIOS, LADOS E NÍVEIS DESEJA NO SEU
-    // DEPÓSITO
-    // FUNÇÃO TAMBÉM JÁ INSTACIA OS ESPAÇOS NA MEMÓRIA DO ESTOQUE
+    // FUNÇÃO INSTACIA OS ESPAÇOS NA MEMÓRIA DO ESTOQUE
     public void iniciarEstoque(Estoque est, int pred, int lado, int nivel) {
         est.criarPredios(pred);
         for (int i = 0; i < pred; i++) {
@@ -23,15 +21,10 @@ public class Estoque{
 
     //INSERIR NOVO PRODUTO NO ESTOQUE
     public void inserir(Produto produto, int pred, int lado, int nivel, int qtd){
-        //System.out.println("LADO:"+lado);
-        //System.out.println("NÍVEL:"+nivel);
         if(pred >= estoque.length){ //VERIFICANDO SE O PRÉDIO DIGITADO FOI VÁLIDO
-            //System.out.println("Prédio inexistente");
         }else{
             estoque[pred].inserir(produto, lado, nivel, qtd);
-            //System.out.println("INSERIU ESTOQUE");
         }
-        
     }
 
 
@@ -57,8 +50,6 @@ public class Estoque{
     }
 
     //MOVER UM PRODUTO EXISTENTE NO ESTOQUE PARA OUTRO ESPAÇO
-    
-
     public boolean mesmoProduto(int predio_part, int lado_part, int nivel_part, /*int dia_part, int mes_part, int ano_part,*/int predio_dest, int lado_dest, int nivel_dest /*, int dia_dest, int mes_dest, int ano_dest*/){
         if(estoque[predio_part].pegarCodigoProduto(lado_part, nivel_part) == estoque[predio_dest].pegarCodigoProduto(lado_dest, nivel_dest)){
             if(estoque[predio_part].pegarDiaValidade(lado_part, nivel_part) == estoque[predio_dest].pegarDiaValidade(lado_dest, nivel_dest)){
@@ -104,7 +95,6 @@ public class Estoque{
     }
 
     public int verificarValidade(int predio, int lado, int nivel, int dia, int mes, int ano){
-        //System.out.println("ENTROU NO ESTOQUE");
         return estoque[predio].verificarValidade(lado, nivel, dia, mes, ano);
     }
 

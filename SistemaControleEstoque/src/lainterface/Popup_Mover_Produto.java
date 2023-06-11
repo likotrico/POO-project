@@ -256,23 +256,12 @@ public class Popup_Mover_Produto {
                                 frameprincipal.atualizarOsBotoes(estoque);
                                 frameprincipal.verificarValidadeEstoque(estoque);
                                 pop.atualizarInformacoes(estoque, predio, lado, nivel);
+                                pop.atualizarPermissaoBotoes(estoque, predio, lado, nivel);
                                 pop.fecharJanela();
                             }
                             else JOptionPane.showMessageDialog(null, "São pessoas feito você que fazem o programador ter que tratar esse tipo de exceção >:(", null, JOptionPane.ERROR_MESSAGE);
                             
                         }
-
-
-
-
-
-
-
-
-
-
-
-
 
                 }else if(!(estoque.existeProduto(predio_dest, lado_dest, nivel_dest))){
                     //CASO DE MOVER UM PRODUTO PARA UM ESPAÇO VAZIO
@@ -357,6 +346,7 @@ public class Popup_Mover_Produto {
                     frameprincipal.atualizarOsBotoes(estoque);
                     frameprincipal.verificarValidadeEstoque(estoque);
                     pop.atualizarInformacoes(estoque, predio_part, lado_part, nivel_part);
+                    pop.atualizarPermissaoBotoes(estoque, predio_part, lado_part, nivel_part);
                     pop.fecharJanela();
                 }else JOptionPane.showMessageDialog(null, "Há um produto diferente no local indicado!", null, JOptionPane.ERROR_MESSAGE); 
             }else JOptionPane.showMessageDialog(null, "Tentando remover zero quantidades do produto? 0-o", null, JOptionPane.ERROR_MESSAGE);
@@ -365,22 +355,5 @@ public class Popup_Mover_Produto {
             
         }else JOptionPane.showMessageDialog(null, "Valores Inválidos!", null, JOptionPane.ERROR_MESSAGE);
         
-    }
-
-    public static void main(String[] args) {
-        int qtd_lados = 2;
-        int qtd_niveis = 2;
-        int qtd_predio = 2; 
-        Estoque estoque = new Estoque();
-        estoque.iniciarEstoque(estoque, qtd_predio, qtd_lados, qtd_niveis);
-        
-        Produto produto = new Produto(1014);
-        produto.setDia_val(1);
-        produto.setMes_val(1);
-        produto.setAno_val(2023);
-        estoque.inserir(produto, qtd_predio - 1, qtd_lados - 1, qtd_niveis - 1, qtd_predio+8);
-        estoque.inserir(produto, qtd_predio - 2, qtd_lados - 2, qtd_niveis - 2, qtd_predio);
-
-        //Popup_Mover_Produto p = new Popup_Mover_Produto(estoque, qtd_predio, qtd_lados, qtd_niveis);
     }
 }

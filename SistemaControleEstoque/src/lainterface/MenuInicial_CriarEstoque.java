@@ -13,7 +13,6 @@ import javax.swing.JTextField;
 
 import estoque.Estoque;
 import usuarios.Interno;
-import usuarios.TipoInterno;
 
 public class MenuInicial_CriarEstoque {
     
@@ -203,15 +202,6 @@ public class MenuInicial_CriarEstoque {
         }else{
             System.out.println("Digite um valor válido");
         }
-    }
-
-
-
-    public static void main(String[] args) {
-        Interno interno = new Interno();
-        interno.setNome("likotrico");
-        interno.setTipoInterno(TipoInterno.ADM);
-        //MenuInicial_CriarEstoque menuCriarEstoque = new MenuInicial_CriarEstoque(interno);
     }
 
     public JFrame getFrame() {

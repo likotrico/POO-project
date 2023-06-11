@@ -1,11 +1,6 @@
 package usuarios;
 
-import java.util.ArrayList;
-
-import estoque.Produto;
-
 public class Externo extends User implements Mudanca{
-    private ArrayList<Produto> produtos;
     private String telefone;
     private String codProduto;
 
@@ -33,14 +28,6 @@ public class Externo extends User implements Mudanca{
 
     public void setTipoExterno(TipoExterno tipoExterno) {
         this.tipoExterno = tipoExterno;
-    }
-
-    public ArrayList<Produto> getProdutos_adquiridosOUvendidos() {
-        return produtos;
-    }
-
-    public void setProdutos_adquiridosOUvendidos(ArrayList<Produto> produtos) {
-        this.produtos = produtos;
     }
 
     @Override

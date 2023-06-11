@@ -211,21 +211,10 @@ public class Popup_Adicionar_Produto {
             
             this.frame.dispose();
             popup.atualizarInformacoes(estoque, predio, lado, nivel);
+            popup.atualizarPermissaoBotoes(estoque, predio, lado, nivel);
             frameprincipal.atualizarOsBotoes(estoque);
             frameprincipal.verificarValidadeEstoque(estoque);
         }else JOptionPane.showMessageDialog(null, "Valores Inválidos!", null, JOptionPane.ERROR_MESSAGE);
-    }
-    
-    public static void main(String[] args) {
-        //int qtd_predios = 2;
-        int qtd_lados = 2;
-        int qtd_niveis = 2;
-        int predio = 2; 
-        Estoque estoque = new Estoque();
-        estoque.iniciarEstoque(estoque, predio, qtd_lados, qtd_niveis);
-
-        //Popup_Adicionar_Produto pop = new Popup_Adicionar_Produto(new JframePrincipal(qtd_lados, qtd_niveis, qtd_predios), estoque, predio, qtd_lados, qtd_niveis);
-
     }
     
 }

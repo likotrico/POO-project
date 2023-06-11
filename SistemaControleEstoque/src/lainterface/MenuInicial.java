@@ -53,7 +53,6 @@ public class MenuInicial {
         botao3.setBounds(75, 172, 150, 40);
         this.botaoSair = botao3;
         
-
         this.frame.add(this.botaoCriarEstoque);
         this.frame.add(this.botaoCarregarEstoque);
         this.frame.add(this.botaoSair);

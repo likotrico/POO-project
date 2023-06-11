@@ -29,9 +29,6 @@ public class Predio {
         }
     }
 
-    //IMPRIME TODOS OS PRODUTOS EM UM PRÉDIO
-
-
     //INSERIR PRODUTO EM UM ESPAÇO
     public void inserir(Produto produto, int lado, int nivel, int qtd){
         try{
@@ -64,7 +61,7 @@ public class Predio {
 
     //VERIFICA SE EXISTE PRODUTO NO ESPAÇO INDICADO
     public boolean existeProduto(int lado, int nivel){
-        if(espaco[lado][nivel].getProduto() == null) return false;
+        if(espaco[lado][nivel].getProduto() == null || espaco[lado][nivel].getQuantidade() == 0) return false;
         else return true;
     }
  
@@ -95,7 +92,6 @@ public class Predio {
     }
 
     public int verificarValidade(int lado, int nivel, int dia, int mes, int ano){
-        //System.out.println("ENTROU NO PRÉDIO");
         return espaco[lado][nivel].verificarValidade(dia, mes, ano);
     }
 

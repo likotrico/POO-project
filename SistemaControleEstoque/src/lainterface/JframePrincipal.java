@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import estoque.Estoque;
-import estoque.Informacoes;
 import estoque.Produto;
 import login_cadastro.Clientes;
 import login_cadastro.Fornecedores;
@@ -176,7 +175,6 @@ public class JframePrincipal {
 
     public void atualizarOsBotoes(Estoque estoque){
         this.teste.atualizarTextoBotoes(estoque);
-        //this.ordenarData(1014, estoque);
     }
 
     public boolean jaNotificado(int predio, int lado, int nivel){
@@ -217,13 +215,12 @@ public class JframePrincipal {
                         this.scrollNotificacoes.setVisible(true);
                     }
                 }
-                //System.out.println("Prédio: "+i+" Lado: "+j+" Nível: "+k+" Val: "+a);
             }
         }
        }
     }
 
-    public void ordenarData(int codigo, Estoque estoque){
+    /*public void ordenarData(int codigo, Estoque estoque){
         int qtd_predios = estoque.pegarNumeroPredios();
         int qtd_lados = estoque.pegarNumeroLados();
         int qtd_niveis = estoque.pegarNumeroNiveis();
@@ -248,8 +245,6 @@ public class JframePrincipal {
         int count = 0;
         while(count != array.size()-1){
             count = 0;
-            //System.out.println(array.size()-1);
-            //System.out.println("DENTRO DO WHILE");
             for(int i = 0; i < array.size() - 1; i++){
                 //System.out.println("loop: "+i);
                 if(i != array.size()-1){
@@ -284,7 +279,7 @@ public class JframePrincipal {
         for (Informacoes informacoes : array) {
             System.out.println(informacoes.getProdutoAno());
         }
-    }
+    }*/
 
     public void sair(Interno interno){
         this.frame.dispose();

@@ -173,10 +173,15 @@ public class Popup_Botoes_Predio_interface {
         JButton botao1 = new JButton();
         botao1.addActionListener( e -> new Popup_Adicionar_Produto(nomeEstoque, frameprincipal, this, estoque, predio, lado, nivel));
         botao1.setFocusable(false);
+        
         botao1.setText("Adicionar");
         botao1.setBounds(105, 160, 100, 25);
         //VERIFICANDO SE O USUÁRIO TEM PERMISSÃO PARA ACESSAR O CONTEÚDO DESSE BOTÃO
-        if(interno.getTipoInterno() == TipoInterno.ADM) botao1.setEnabled(true);
+        if(interno.getTipoInterno() == TipoInterno.ADM){
+            if(!estoque.existeProduto(predio, lado, nivel)){
+                botao1.setEnabled(true);
+            }else botao1.setEnabled(false);
+        } 
         else botao1.setEnabled(false);
         this.botaoAdicionar = botao1;
         
@@ -188,7 +193,11 @@ public class Popup_Botoes_Predio_interface {
         botao2.setText("Mover");
         botao2.setBounds(105, 190, 100, 25);
         //VERIFICANDO SE O USUÁRIO TEM PERMISSÃO PARA ACESSAR O CONTEÚDO DESSE BOTÃO
-        if(interno.getTipoInterno() == TipoInterno.ADM) botao2.setEnabled(true);
+        if(interno.getTipoInterno() == TipoInterno.ADM){
+            if(estoque.existeProduto(predio, lado, nivel)){
+                botao2.setEnabled(true);
+            }else botao2.setEnabled(false);
+        } 
         else botao2.setEnabled(false);
         this.botaoMover = botao2;
 
@@ -199,7 +208,12 @@ public class Popup_Botoes_Predio_interface {
         botao3.setText("Remover");
         botao3.setBounds(105, 220, 100, 25);
         //VERIFICANDO SE O USUÁRIO TEM PERMISSÃO PARA ACESSAR O CONTEÚDO DESSE BOTÃO
-        if(interno.getTipoInterno() == TipoInterno.ADM) botao3.setEnabled(true);
+        if(interno.getTipoInterno() == TipoInterno.ADM){
+            if(estoque.existeProduto(predio, lado, nivel)){
+                System.out.println("Quantidade no prédio: "+estoque.pegarQuantidade(predio, lado, nivel));
+                botao3.setEnabled(true);
+            }else botao3.setEnabled(false);
+        } 
         else botao3.setEnabled(false);
         this.botaoRemover = botao3;
 
@@ -272,6 +286,19 @@ public class Popup_Botoes_Predio_interface {
             estoque.removerTudo(predio, lado, nivel);
         } 
 
+    }
+
+    public void atualizarPermissaoBotoes(Estoque estoque,int predio, int lado, int nivel){
+        if(!estoque.existeProduto(predio, lado, nivel)){
+            this.botaoAdicionar.setEnabled(true);
+            this.botaoRemover.setEnabled(false);
+            this.botaoMover.setEnabled(false);
+        }
+        else{
+            this.botaoAdicionar.setEnabled(false);
+            this.botaoRemover.setEnabled(true);
+            this.botaoMover.setEnabled(true);
+        }
     }
 
     public void fecharJanela(){

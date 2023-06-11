@@ -77,17 +77,13 @@ public class Espaco {
      * Retorno -1 => Produto não existe.
      */
     public int verificarValidade(int dia, int mes, int ano){
-        //System.out.println("ENTROU ESPAÇO");
         if(produto != null){
-            //System.out.println("O PRODUTO NÃO É NULO");
             if(produto.getCodigo() > 0){
-                //System.out.println("PRODUTO MAIOR Q 0");
                 if(ano < produto.getAno_val())return 1;
                 else if(ano == produto.getAno_val()){
                     if(mes < produto.getMes_val())return 1;
                     else if(mes == produto.getMes_val()){
                         if(dia > produto.getDia_val()){
-                            //System.out.println("ENTROU NO DIA >=");
                             return 0;
                         }
                         else return 1;

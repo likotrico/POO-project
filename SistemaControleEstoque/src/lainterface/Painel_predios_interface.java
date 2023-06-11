@@ -1,9 +1,8 @@
 package lainterface;
+
 import java.awt.Color;
 import java.awt.Dimension;
-
 import javax.swing.JPanel;
-
 import estoque.Estoque;
 import usuarios.Interno;
 
@@ -43,7 +42,6 @@ public class Painel_predios_interface extends JPanel{
     public void setarPosicoesPredios(){
         int i;
         int x = 20, y = 20;
-        //int acumuladorHorizontal = x, acumuladorVertical = y;
         int largura_celula = predios[0].getLargura();
         int altura_celula = predios[0].getAltura();
         boolean impar = true;
@@ -57,7 +55,6 @@ public class Painel_predios_interface extends JPanel{
                 x = 20;
                 impar = true;
             }
-            
         }
     }
 

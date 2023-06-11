@@ -1,11 +1,8 @@
 package lainterface;
 
 import java.util.ArrayList;
-import estoque.*;
-
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
 import estoque.Estoque;
 import estoque.Informacoes;
 import estoque.Produto;

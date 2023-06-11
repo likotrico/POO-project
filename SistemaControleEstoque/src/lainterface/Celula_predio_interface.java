@@ -67,7 +67,6 @@ public class Celula_predio_interface extends JPanel{
                 JButton b = new JButton();
                 int lado = i + 1;
                 int nivel = qtd_linhas - j;
-                //b.setText(""+i+j);
                 b.setBounds(x, y, 70, 70);
                 b.setFocusable(false);
                 b.addActionListener(e -> new Popup_Botoes_Predio_interface(nomeEstoque, interno, frameprincipal, estoque, this.predio - 1, lado - 1, nivel - 1));
@@ -75,8 +74,6 @@ public class Celula_predio_interface extends JPanel{
                 this.lista_boteos[nivel - 1][lado - 1] = b;
                 y+=70;
                 this.altura+=70;
-                //System.out.println("y: "+y);
-                //System.out.println("altura: "+this.altura);
                 this.setPreferredSize(new Dimension((this.largura + x),(this.altura + y)));
             }
             x+=70;
@@ -84,13 +81,8 @@ public class Celula_predio_interface extends JPanel{
             if(i!=qtd_colunas-1){
                 y=50;
                 this.altura=50;
-            }/*else{
-                this.largura+=0;
-                this.altura+=0;
-            }*/
+            }
         }
-        //System.out.println("xf: "+x);
-        //System.out.println("yf: "+y);
         this.setBounds(0,0,this.getLargura(), this.getAltura());
         texto_principal.setBounds(0,0,this.getLargura(),50);
     }

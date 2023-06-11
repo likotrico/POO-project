@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,12 +18,9 @@ import usuarios.Interno;
 public class MenuInicial_CarregarEstoque {
     
     private JFrame frame;
-
     private JLabel textoCarregarEstoque;
     private JLabel textoNome;
-
     private JTextField inputNome;
-
     private JButton botaoCarregarEstoque;
     private JButton botaoCancelar;
 
@@ -163,10 +159,6 @@ public class MenuInicial_CarregarEstoque {
             
 
         }else JOptionPane.showMessageDialog(null, "Campo Vazio", null, JOptionPane.ERROR_MESSAGE);
-    }
-
-    public static void main(String[] args) {
-       // new MenuInicial_CarregarEstoque();
     }
 
 }

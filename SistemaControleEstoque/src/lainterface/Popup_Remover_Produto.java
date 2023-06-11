@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import estoque.Estoque;
-import estoque.Produto;
 
 public class Popup_Remover_Produto {
     
@@ -174,6 +173,7 @@ public class Popup_Remover_Produto {
                 this.frame.dispose();//FECHANDO A JANELA POP-UP
                 frameprincipal.atualizarOsBotoes(estoque);//ATUALIZANDO OS BOTÕES QUE SERÃO IMPRESSOS NA JFRAME PRINCIPAL
                 popup.atualizarInformacoes(estoque, predio, lado, nivel);//ATUALIZANDO AS INFORMAÇÕES DO POP-UP
+                popup.atualizarPermissaoBotoes(estoque, predio, lado, nivel);
             }else JOptionPane.showMessageDialog(null, "Erro: A quantidade para ser removida superior a existente!", null, JOptionPane.ERROR_MESSAGE);
             
             
@@ -234,23 +234,6 @@ public class Popup_Remover_Produto {
         this.frame.dispose();
         frameprincipal.atualizarOsBotoes(estoque);
         popup.atualizarInformacoes(estoque, predio, lado, nivel);
-    }
-
-    public static void main(String[] args) {
-        int qtd_lados = 2;
-        int qtd_niveis = 2;
-        int qtd_predio = 2; 
-        Estoque estoque = new Estoque();
-        estoque.iniciarEstoque(estoque, qtd_predio, qtd_lados, qtd_niveis);
-
-        Produto produto = new Produto(1014);
-        produto.setDia_val(1);
-        produto.setMes_val(1);
-        produto.setAno_val(2023);
-        estoque.inserir(produto, qtd_predio - 1, qtd_lados - 1, qtd_niveis - 1, qtd_predio+8);
-        estoque.inserir(produto, qtd_predio - 2, qtd_lados - 2, qtd_niveis - 2, qtd_predio);
-
-
-        //Popup_Remover_Produto p = new Popup_Remover_Produto(estoque, qtd_predio, qtd_lados, qtd_niveis);
+        popup.atualizarPermissaoBotoes(estoque, predio, lado, nivel);
     }
 }
