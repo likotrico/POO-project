@@ -174,6 +174,7 @@ public class FiltrarProduto extends javax.swing.JFrame {
 
     private void filtrar(int codigo, Estoque estoque) {
         DefaultTableModel dtmProdutos = (DefaultTableModel) tableProdutos.getModel();
+        dtmProdutos.setRowCount(0);
         int qtd_predios = estoque.pegarNumeroPredios();
         int qtd_lados = estoque.pegarNumeroLados();
         int qtd_niveis = estoque.pegarNumeroNiveis();
