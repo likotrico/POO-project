@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import estoque.Estoque;
@@ -152,56 +153,65 @@ public class MenuInicial_CriarEstoque {
     }
 
     public void criarEstoque(Interno interno, MenuInicial menuinicial){
-        
-        if(inputPredio.getText().matches("[0-9]*") && inputLado.getText().matches("[0-9]*") && inputNivel.getText().matches("[0-9]*")){
-            int qtd_predio = Integer.parseInt(inputPredio.getText());
-            int qtd_lado = Integer.parseInt(inputLado.getText());
-            int qtd_nivel = Integer.parseInt(inputNivel.getText());
+        if(inputNomeEstoque.getText() != ""&& inputPredio.getText() != "" && inputLado.getText()!=""&&inputNivel.getText()!=""){
+            if(inputPredio.getText().matches("[0-9]*") && inputLado.getText().matches("[0-9]*") && inputNivel.getText().matches("[0-9]*")){
+                int qtd_predio = Integer.parseInt(inputPredio.getText());
+                int qtd_lado = Integer.parseInt(inputLado.getText());
+                int qtd_nivel = Integer.parseInt(inputNivel.getText());
 
-            String nome = ""+inputNomeEstoque.getText();
-            try{
-                qtd_predio = Integer.parseInt(inputPredio.getText());
-                qtd_lado = Integer.parseInt(inputLado.getText());
-                qtd_nivel = Integer.parseInt(inputNivel.getText());
+                String nome = ""+inputNomeEstoque.getText();
+                if(qtd_predio > 0 && qtd_lado > 0 && qtd_nivel > 0){
+                    System.out.println("ENTROU IF");
+                    try{
+                        qtd_predio = Integer.parseInt(inputPredio.getText());
+                        qtd_lado = Integer.parseInt(inputLado.getText());
+                        qtd_nivel = Integer.parseInt(inputNivel.getText());
 
-                String path = "SistemaControleEstoque/src/arquivosEstoque/"+nome;
-                Files.createDirectory(Paths.get(path));
-                String pathProdutosEstoque = "SistemaControleEstoque/src/arquivosEstoque/"+nome+"/"+nome+"ProdutosEstoque";
-                Files.createDirectory(Paths.get(pathProdutosEstoque));
+                        String path = "SistemaControleEstoque/src/arquivosEstoque/"+nome;
+                        Files.createDirectory(Paths.get(path));
+                        String pathProdutosEstoque = "SistemaControleEstoque/src/arquivosEstoque/"+nome+"/"+nome+"ProdutosEstoque";
+                        Files.createDirectory(Paths.get(pathProdutosEstoque));
+                        
+                        File file = new File(path+"/"+nome+".csv");
+                        file.createNewFile();
+
+                        File produtosEstoque = new File(pathProdutosEstoque+"/"+nome+"ProdutosEstoque.csv");
+                        produtosEstoque.createNewFile();
+
+                        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+                        bw.write("qtd_predio;qtd_lado;qtd_nivel\n");
+                        bw.write(qtd_predio+";"+qtd_lado+";"+qtd_nivel);
+                        bw.flush();
+                        bw.close();
+
+                        BufferedWriter bw2 = new BufferedWriter(new FileWriter(produtosEstoque));
+                        bw2.write("predio;lado;nivel;codigo;dia;mes;ano;quantidade\n");
+                        bw2.flush();
+                        bw2.close();
+
+                        this.frame.dispose();
+                        menuinicial.fecharJanela();
+
+                        Estoque estoque = new Estoque();
+                        estoque.iniciarEstoque(estoque, qtd_predio, qtd_lado, qtd_nivel);
+                        JframePrincipal framePrincipal = new JframePrincipal();
+                        framePrincipal.iniciarFrame(nome, interno, framePrincipal, estoque, qtd_lado, qtd_nivel, qtd_predio);
+
+                    }catch(Exception e){
+                        JOptionPane.showMessageDialog(null, "Erro: Não foi possível criar o arquivo", null, JOptionPane.ERROR_MESSAGE);
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Erro: Insira valores positivos!", null, JOptionPane.ERROR_MESSAGE);
+                }
                 
-                File file = new File(path+"/"+nome+".csv");
-                file.createNewFile();
-
-                File produtosEstoque = new File(pathProdutosEstoque+"/"+nome+"ProdutosEstoque.csv");
-                produtosEstoque.createNewFile();
-
-                BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-                bw.write("qtd_predio;qtd_lado;qtd_nivel\n");
-                bw.write(qtd_predio+";"+qtd_lado+";"+qtd_nivel);
-                bw.flush();
-                bw.close();
-
-                BufferedWriter bw2 = new BufferedWriter(new FileWriter(produtosEstoque));
-                bw2.write("predio;lado;nivel;codigo;dia;mes;ano;quantidade\n");
-                bw2.flush();
-                bw2.close();
-
-                this.frame.dispose();
-                menuinicial.fecharJanela();
-
-                Estoque estoque = new Estoque();
-                estoque.iniciarEstoque(estoque, qtd_predio, qtd_lado, qtd_nivel);
-                JframePrincipal framePrincipal = new JframePrincipal();
-                framePrincipal.iniciarFrame(nome, interno, framePrincipal, estoque, qtd_lado, qtd_nivel, qtd_predio);
-
-                
-            }catch(Exception e){
-                //e.printStackTrace();
-                System.out.println("Erro ao criar o arquivo "+nome);
+            }else{
+                JOptionPane.showMessageDialog(null, "Erro: Valores inválidos", null, JOptionPane.ERROR_MESSAGE);
             }
         }else{
-            System.out.println("Digite um valor válido");
+            JOptionPane.showMessageDialog(null, "Erro: Algum dos campos está vazio!", null, JOptionPane.ERROR_MESSAGE);
         }
+        
+        
     }
 
     public JFrame getFrame() {

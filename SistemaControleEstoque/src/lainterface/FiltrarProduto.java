@@ -196,40 +196,35 @@ public class FiltrarProduto extends javax.swing.JFrame {
         }
         //ORDENAR POR DATA
         int count = 0;
-        while(count != array.size()-1){
-            count = 0;
-            //System.out.println(array.size()-1);
-            //System.out.println("DENTRO DO WHILE");
-            for(int i = 0; i < array.size() - 1; i++){
-                //System.out.println("loop: "+i);
-                if(i != array.size()-1){
-                    if(array.get(i).getProdutoAno() > array.get(i+1).getProdutoAno()){
-                        //System.out.println("i: "+array.get(i).getProdutoAno());
-                        //System.out.println("i+1: "+array.get(i+1).getProdutoAno());
-                        Informacoes inf_aux = array.get(i);
-                        //System.out.println("inf: "+inf_aux.getProdutoAno());
-                        array.set(i, array.get(i+1));
-                        array.set(i+1, inf_aux);
-                    }
-                    else if(array.get(i).getProdutoAno() == array.get(i+1).getProdutoAno()){
-                        if(array.get(i).getProdutoMes() > array.get(i+1).getProdutoMes()){
+        if(array.size() > 0){
+            while(count != array.size()-1){
+                count = 0;
+                for(int i = 0; i < array.size() - 1; i++){
+                    if(i != array.size()-1){
+                        if(array.get(i).getProdutoAno() > array.get(i+1).getProdutoAno()){
                             Informacoes inf_aux = array.get(i);
                             array.set(i, array.get(i+1));
                             array.set(i+1, inf_aux);
                         }
-                        else if(array.get(i).getProdutoMes() == array.get(i+1).getProdutoMes()){
-                            if(array.get(i).getProdutoDia() > array.get(i+1).getProdutoDia()){
+                        else if(array.get(i).getProdutoAno() == array.get(i+1).getProdutoAno()){
+                            if(array.get(i).getProdutoMes() > array.get(i+1).getProdutoMes()){
                                 Informacoes inf_aux = array.get(i);
                                 array.set(i, array.get(i+1));
                                 array.set(i+1, inf_aux);
-                            }else count += 1;
+                            }
+                            else if(array.get(i).getProdutoMes() == array.get(i+1).getProdutoMes()){
+                                if(array.get(i).getProdutoDia() > array.get(i+1).getProdutoDia()){
+                                    Informacoes inf_aux = array.get(i);
+                                    array.set(i, array.get(i+1));
+                                    array.set(i+1, inf_aux);
+                                }else count += 1;
+                            }
+                            else count += 1;
                         }
                         else count += 1;
                     }
-                    else count += 1;
                 }
             }
-            //System.out.println("Count: "+count);
         }
         for (Informacoes informacoes : array) {
             // Enviando os dados coletados para a tabela
